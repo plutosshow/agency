@@ -91,11 +91,15 @@ class ProductController extends Controller
         $arr = [
             [
                 "title"   => "Hello",
-                "name"    => "name"
+                "name"    => "name212"
             ],
             [
                 "title"   => "Hello2",
                 "name"    => "name2"
+            ],
+            [
+                "title"   => "Hello3",
+                "name"    => "name5"
             ],
             [
                 "title"   => "Hello3",

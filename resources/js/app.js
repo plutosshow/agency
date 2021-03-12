@@ -21,6 +21,8 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('ajax-component', require('./components/AjaxComponent.vue').default);
+// Vue.component('react-test', require('./components/ReactTest.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
