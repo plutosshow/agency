@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/test', function () {
+    return view('tets');
+});
+
 
 Route::resource('/products', 'App\Http\Controllers\ProductController');
 
@@ -23,4 +27,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);
+//Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);
