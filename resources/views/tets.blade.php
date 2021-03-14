@@ -23,24 +23,29 @@
 
 @include('layouts.header')
 
-@include('templates.slider')
+<body>
+    @include('templates.slider')
 
-@include('templates.filter')
+    @include('templates.filter')
 
-<div class="site-section site-section-sm bg-success">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="site-section-title">
-                    <h2>Последние предложения для вас</h2>
+    <div class="site-section site-section-sm bg-light-gray">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="site-section-title">
+                        <h2>Последние предложения для вас</h2>
+                    </div>
                 </div>
             </div>
+            <div class="row mb-5">
+                @include('templates.showcase')
+            </div>
         </div>
-        <div class="row mb-5">
-            @include('templates.showcase')
-        </div>
+        <ajax-component></ajax-component>
     </div>
-</div>
 
+    @include('layouts.footer')
+</body>
+</html>
 
 
