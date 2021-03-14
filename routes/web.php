@@ -23,11 +23,10 @@ Route::get('/slider', function () {
     return view('slider');
 });
 
-
 Route::resource('/products', 'App\Http\Controllers\ProductController');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);
+Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);

@@ -42,7 +42,9 @@
             </div>
         </div>
     </div>
-
+{{--    <div class="col-lg-8 col-md-12 col-sm-6" id="app22222">--}}
+{{--        <ajax-component></ajax-component>--}}
+{{--    </div>--}}
     @include('layouts.footer')
 </body>
 </html>
