@@ -19,6 +19,9 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('tets');
 });
+Route::get('/slider', function () {
+    return view('slider');
+});
 
 
 Route::resource('/products', 'App\Http\Controllers\ProductController');

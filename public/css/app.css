@@ -10310,7 +10310,6 @@ a:hover {
   bottom: 0;
 }
 
-/* Navbar */
 /* Blocks */
 .top-bar {
   padding: 5px 0;
@@ -10972,4 +10971,10 @@ a:hover {
 }
 .feature .text p {
   color: #888;
+}
+
+/* Slide */
+.bx-wrapper {
+  box-shadow: none;
+  border: 0;
 }
