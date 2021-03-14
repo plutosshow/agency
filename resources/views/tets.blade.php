@@ -41,7 +41,6 @@
                 @include('templates.showcase')
             </div>
         </div>
-        <ajax-component></ajax-component>
     </div>
 
     @include('layouts.footer')

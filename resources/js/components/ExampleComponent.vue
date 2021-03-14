@@ -1,12 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container" id="app">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Example Component</div>
 
-                    <div class="card-body" v-for="message in exdata">
-                        {{message}}
+                    <div class="card-body">
+                        I'm an example component.
                     </div>
                 </div>
             </div>
@@ -16,9 +16,6 @@
 
 <script>
     export default {
-        props:  [
-            "exdata"
-        ],
         mounted() {
             console.log('Component mounted.')
         }
