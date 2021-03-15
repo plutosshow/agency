@@ -14,16 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/test', function () {
-    return view('tets');
-});
-Route::get('/slider', function () {
-    return view('slider');
+    return view('home');
 });
 
-Route::resource('/products', 'App\Http\Controllers\ProductController');
+Route::get('/test', function () {
+    return view('test');
+});
 
 Auth::routes();
 

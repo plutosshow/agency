@@ -1,3 +1,3 @@
-@extends('layouts.header', ['title' => 'Home'])
+@extends('templates.header', ['title' => 'test'])
 
 
