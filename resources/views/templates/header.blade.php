@@ -8,21 +8,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0 d-flex justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">ГЛАВНАЯ</a>
+                        <a class="nav-link" aria-current="page" href="{{ url('/') }}">ГЛАВНАЯ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">О НАС</a>
+                        <a class="nav-link" href="{{ url('about') }}">О НАС</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            УСЛУГИ
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">ПОКУПКА</a></li>
-                            <li><a class="dropdown-item" href="#">ПРОДАЖА</a></li>
-{{--                            <li><hr class="dropdown-divider"></li>--}}
-                        </ul>
-                    </li>
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">

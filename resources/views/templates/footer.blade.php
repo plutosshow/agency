@@ -9,7 +9,7 @@
 
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2021 Copyright:
-        <a href="url()">{{ config('app.name') }}</a>
+        <a href="{{ url('/') }}">{{ config('app.name') }}</a>
         by Yuri Shcherba
     </div>
     <!-- Copyright -->
