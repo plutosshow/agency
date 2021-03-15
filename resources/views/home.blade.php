@@ -1,23 +1,52 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        @isset($title)
+            {{ $title }} |
+        @endisset
+        {{ config('app.name') }}
+    </title>
+    <!-- Fonts -->
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+</head>
 
-                    {{ __('You are logged in!') }}
+@include('templates.header')
+
+<body>
+    @include('templates.slider')
+
+    @include('templates.filter')
+
+    <div class="site-section site-section-sm bg-light-gray">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="site-section-title">
+                        <h2>Последние предложения для вас</h2>
+                    </div>
                 </div>
+            </div>
+            <div class="row mb-5">
+                @include('templates.showcase')
             </div>
         </div>
     </div>
-</div>
-@endsection
+{{--    <div class="col-lg-8 col-md-12 col-sm-6" id="app22222">--}}
+{{--        <ajax-component></ajax-component>--}}
+{{--    </div>--}}
+    @include('templates.footer')
+</body>
+</html>
+
+

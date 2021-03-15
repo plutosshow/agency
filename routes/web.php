@@ -14,17 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
 Route::get('/test', function () {
-    return view('tets');
+    return view('test');
 });
-
-
-Route::resource('/products', 'App\Http\Controllers\ProductController');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);
+Route::get('/get-json', [App\Http\Controllers\ProductController::class, 'getJson']);
