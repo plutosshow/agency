@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');;
-
+//Route::get('/', function () {
+//    return view('home');
+//})->name('home');
 
 Auth::routes();
 
 Route::get('/about', function () {
     return view('about');
-})->name('about');;
+})->name('about');
+
+Route::get('/', 'App\Http\Controllers\FlatsController@index')->name('home');
+Route::get('/property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');

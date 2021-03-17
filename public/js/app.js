@@ -2010,6 +2010,13 @@ $(document).ready(function () {
     keyboardEnabled: true,
     mode: 'fade'
   });
+  $('.slider-control').bxSlider({
+    controls: true,
+    auto: true,
+    pager: true,
+    keyboardEnabled: true,
+    mode: 'fade'
+  });
 });
 
 /***/ }),
