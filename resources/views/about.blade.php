@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title')About | {{ config('app.name') }} @endsection
+@section('title')О нас | {{ config('app.name') }} @endsection
 @section('content')
     <div class="site-wrap">
         <div class="site-section border-bottom">

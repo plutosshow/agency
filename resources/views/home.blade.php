@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title')Home | {{ config('app.name') }}@endsection
+@section('title')Главная | {{ config('app.name') }}@endsection
 
 @section('content')
     @include('templates.slider')

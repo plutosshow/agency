@@ -6,7 +6,7 @@
                 <p class="lead text-white-5">Лично для тебя</p>
             </div>
             <div class="col-md-4 text-center">
-                <a href="{{ url('/') }}" class="btn btn-outline-primary btn-block py-3 btn-lg">Посмотреть предложения</a>
+                <a href="{{ route('home') }}" class="btn btn-outline-primary btn-block py-3 btn-lg">Посмотреть предложения</a>
             </div>
         </div>
     </div>
