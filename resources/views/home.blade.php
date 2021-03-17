@@ -1,6 +1,5 @@
 @extends('layouts.main')
 @section('title')Главная | {{ config('app.name') }}@endsection
-
 @section('content')
     @include('templates.slider')
     @include('templates.filter')
@@ -14,7 +13,7 @@
                 </div>
             </div>
             <div class="row mb-5">
-                @include('templates.showcase')
+                @include('templates.showcase', ['flats' => $allFlats])
             </div>
         </div>
     </div>

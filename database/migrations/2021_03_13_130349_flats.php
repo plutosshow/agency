@@ -16,6 +16,7 @@ class Flats extends Migration
         Schema::create('flats', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('rooms');
+            $table->unsignedTinyInteger('floor');
             $table->unsignedBigInteger('price');
             $table->unsignedFloat('livedSquare');
             $table->unsignedFloat('commonSquare');
