@@ -11,6 +11,13 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+{{-- Recaptcha --}}
+{{--    <script src="https://www.google.com/recaptcha/api.js?render={{env('RECAPTCHA_FRONT')}}"></script>--}}
+{{--    <script>--}}
+{{--        function onSubmit(token) {--}}
+{{--            document.getElementById("loginForm").submit();--}}
+{{--        }--}}
+{{--    </script>--}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -19,8 +26,7 @@
 <body>
     <div id="app">
         @include('templates.header')
-
-        <main class="py-4">
+        <main class="py-5">
             @yield('content')
         </main>
 
