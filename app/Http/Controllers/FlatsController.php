@@ -14,7 +14,7 @@ class FlatsController extends Controller
      */
     public function index()
     {
-        $flats = Flats::all();
+        $flats = Flats::select('*')->paginate(12);
         return view('home', ['allFlats' => $flats]);
     }
 
