@@ -21,6 +21,7 @@ class Flats extends Migration
             $table->unsignedFloat('livedSquare');
             $table->unsignedFloat('commonSquare');
             $table->year('year');
+            $table->string('owner');
             $table->string('type');
             $table->text('comments');
             $table->string('region');
