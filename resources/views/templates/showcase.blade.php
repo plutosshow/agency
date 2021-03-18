@@ -1,9 +1,9 @@
-<div class="row">
-    @foreach($flats as $flat)
-        <div class="col-md-6 col-lg-4 mb-4">
+
+@foreach($flats as $flat)
+        <div class="col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center">
             <a href="{{ route('property', $flat->id) }}" class="prop-entry d-block">
                 <figure>
-                    <img src="images/img_1.jpg" alt="Image" class="img-fluid">
+                    <img src="{{ $flat->image }}" alt="Image" class="img-fluid">
                 </figure>
                 <div class="prop-text">
                     <div class="inner">
@@ -35,7 +35,6 @@
             </a>
         </div>
     @endforeach
-</div>
 
 @include('templates.pagination', ['paginator' => $flats])
 

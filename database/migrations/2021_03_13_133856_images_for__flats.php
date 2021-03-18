@@ -13,7 +13,7 @@ class ImagesForFlats extends Migration
      */
     public function up()
     {
-        Schema::create('imgFlats', function (Blueprint $table) {
+        Schema::create('img_flats', function (Blueprint $table) {
             $table->id();
             $table->string('flat', '10');
             $table->string('image');
