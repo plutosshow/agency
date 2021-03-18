@@ -2477,7 +2477,8 @@ $(document).ready(function () {
     auto: true,
     pager: false,
     keyboardEnabled: true,
-    mode: 'fade'
+    mode: 'fade',
+    touchEnabled: false
   });
   $('.slider-control').bxSlider({
     controls: true,

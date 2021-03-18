@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title')Главная | {{ config('app.name') }}@endsection
 @section('content')
-    @include('templates.slider')
+    @include('templates.slider',['slides' => $slides])
     @include('templates.filter')
     <div class="site-section site-section-sm bg-light-gray">
         <div class="container">
