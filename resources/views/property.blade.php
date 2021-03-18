@@ -51,6 +51,7 @@
                             <strong class="d-block">{{ $priceSquare }}</strong>
                         </div>
                     </div>
+                    @include('templates.success-errors')
                     <h2 class="h4 text-black">Больше информации</h2>
                     <p>{{ $flat->comments }}</p>
 

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class request extends Model
+class Requests extends Model
 {
     protected $fillable = [
         'name',
-        'phone',
+        'phone'
     ];
 }

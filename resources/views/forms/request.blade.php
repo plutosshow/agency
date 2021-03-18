@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             <label for="phone">Телефон</label>
-            <input type="text" name="phone" id="phone" class="phone form-control @error('phone') is-invalid @enderror"  value="{{ old('phone') }}">
+            <input type="text" name="phone" id="phone" class="phone form-control @error('phone') is-invalid @enderror"  value="{{ old('phone') }}" placeholder="+7-(000)-000-00-00">
             @error('phone')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Requests;
 use App\Providers\RouteServiceProvider;
-//use Request;
-use Illuminate\Http\Request;
+use Request;
 use App\Http\Requests\FormRequestRequest;
 
 class RequestController extends Controller
 {
     public function submit(FormRequestRequest $request)
     {
-//        $validation = $request->validate([
-//            'name'  => 'required',
-//            'phone' => 'required|size:11'
-//        ]);
-//        dd($request->input('name'));
+        $server = Request::server('HTTP_REFERER');
 
-        //        return redirect(RouteServiceProvider::HOME);
+        $formRequest = new Requests();
+
+        $formRequest->name = $request->input('name');
+        $formRequest->phone = $request->input('phone');
+
+        $formRequest->save();
+
+        return redirect($server)->with('success', 'Ваш запрос на обратную связь был принят. Наш агент свяжется с вами в ближайшее время');
     }
 }
