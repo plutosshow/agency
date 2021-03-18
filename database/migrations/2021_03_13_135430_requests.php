@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Request extends Migration
+class Requests extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class Request extends Migration
      */
     public function up()
     {
-        Schema::create('request', function (Blueprint $table) {
+        Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone', '12');
+            $table->string('phone', '18');
+            $table->boolean('executed')->default('0');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class Request extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('request');
+        Schema::dropIfExists('requests');
     }
 }

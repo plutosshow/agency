@@ -51,6 +51,7 @@
                             <strong class="d-block">{{ $priceSquare }}</strong>
                         </div>
                     </div>
+                    @include('templates.success-errors')
                     <h2 class="h4 text-black">Больше информации</h2>
                     <p>{{ $flat->comments }}</p>
 
@@ -61,27 +62,7 @@
 
 
                 <div class="col-lg-4 pl-md-6">
-                    <div class="bg-white widget border rounded">
-                        <h3 class="h4 text-black widget-title mb-3">Связаться с агентом</h3>
-                        <form action="" class="form-contact-agent" method="POST" id="answer">
-                            <div class="form-group">
-                                <label for="name">Имя</label>
-                                <input type="text" name="Name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Телефон</label>
-                                <input type="text" name="Phone" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-primary" value="Отправить запрос">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="bg-white widget border rounded">
-                        <h3 class="h4 text-black widget-title mb-3">О агенте</h3>
-                        <p>Понравилось предложение, хотите купить или, наоборот, продать с помощью нашего агенства
-                            недвижимости. Оставляйте запрос и наш агент свяжеться с вами.</p>
-                    </div>
+                    @include('forms.request')
                 </div>
             </div>
         </div>
