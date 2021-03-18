@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Flats;
+use App\Models\imgFlats;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Providers\Collection;
 
 class FlatsController extends Controller
 {
@@ -14,7 +17,13 @@ class FlatsController extends Controller
      */
     public function index()
     {
-        $flats = Flats::select('*')->paginate(12);
+        $flats = DB::table('flats')
+            ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
+            ->groupBy('img_flats.flat', 'flats.id')
+            ->distinct()
+            ->select('flats.*', 'img_flats.image')
+            ->get()->paginate(9);
+
         return view('home', ['allFlats' => $flats]);
     }
 
