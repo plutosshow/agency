@@ -17,6 +17,7 @@ class ImagesForFlats extends Migration
             $table->id();
             $table->string('flat', '10');
             $table->string('image');
+            $table->boolean('show_on_main')->default('0');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class ImagesForFlats extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('imgFlats');
+        Schema::dropIfExists('img_flats');
     }
 }

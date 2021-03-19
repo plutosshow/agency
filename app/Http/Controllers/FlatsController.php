@@ -24,7 +24,22 @@ class FlatsController extends Controller
             ->select('flats.*', 'img_flats.image')
             ->get()->paginate(9);
 
-        return view('home', ['allFlats' => $flats]);
+
+
+        return view('home', [
+            'allFlats' => $flats,
+            'slides'  => $this->sliderFlats()
+            ]);
+    }
+
+    public function sliderFlats()
+    {
+        $slides = DB::table('flats')
+            ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
+            ->select('flats.*', 'img_flats.image')
+            ->where('img_flats.show_on_main', '=', 1)
+            ->get()->take('6');
+        return $slides;
     }
 
     /**

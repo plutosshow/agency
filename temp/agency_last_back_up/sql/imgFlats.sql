@@ -1,4 +1,4 @@
-INSERT INTO `imgFlats` (`Id`, `flat`, `image`) VALUES
+INSERT INTO `img_flats` (`Id`, `flat`, `image`) VALUES
 (1, 1, 'https://i.ibb.co/YW1JXz5/img-7.jpg'),
 (2, 2, 'https://i.ibb.co/YNb755w/img-6.jpg'),
 (3, 63, 'https://i.ibb.co/0hqfgBX/img-1.jpg'),
