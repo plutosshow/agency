@@ -831,7 +831,7 @@
 @media only screen and (max-width: 600px) {
     .site-blocks-cover {
             &, .row {
-                min-height: 700px;
+                min-height: 400px;
                 height: calc(100vh - 134px);
             }
         .text {
