@@ -26,7 +26,7 @@ require('./mask');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('ajax-component', require('./components/AjaxComponent').default);
+Vue.component('show-flats-component', require('./components/ShowFlatsComponent').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -38,6 +38,9 @@ Vue.component('ajax-component', require('./components/AjaxComponent').default);
 
 window.addEventListener('load', function () {
     const app = new Vue({
-        el: '#app22222',
+        el: '#app',
+        data: {
+            message: ''
+        }
     });
 })

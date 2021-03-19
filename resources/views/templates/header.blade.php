@@ -1,4 +1,4 @@
-<header class="site-header sticky-top">
+<header class="site-header sticky-top" style="z-index: 10000">
     <nav class="navbar navbar-expand-md navbar-light bg-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name') }}</a>
