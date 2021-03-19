@@ -2021,9 +2021,6 @@ window.addEventListener('load', function () {
       message: ''
     }
   });
-  var loader = new Vue({
-    el: '#loader-vue'
-  });
 });
 
 /***/ }),

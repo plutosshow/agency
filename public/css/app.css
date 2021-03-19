@@ -11324,7 +11324,7 @@ a:hover {
   right: 10px;
   background: #fff;
   padding: 40px;
-  width: 50%;
+  width: 30%;
 }
 
 @media (max-width: 991.98px) {
@@ -11372,7 +11372,7 @@ a:hover {
 
 .site-blocks-cover,
 .site-blocks-cover .row {
-  min-height: 600px;
+  min-height: 200px;
   height: calc(100vh - 134px);
 }
 
@@ -12094,11 +12094,45 @@ a:hover {
   color: #888;
 }
 
+@media only screen and (max-width: 1200px) {
+  .site-blocks-cover,
+  .site-blocks-cover .row {
+    min-height: 600px;
+    height: calc(100vh - 134px);
+  }
+
+  .site-blocks-cover .text {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .site-blocks-cover,
+  .site-blocks-cover .row {
+    min-height: 700px;
+    height: calc(100vh - 134px);
+  }
+
+  .site-blocks-cover .text {
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+  }
+}
+
 /* Slide */
 
 .bx-wrapper {
   box-shadow: none;
   border: 0;
+  width: 100%;
+}
+
+.bx-wrapper img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .slider-cover {
