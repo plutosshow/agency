@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Forms;
 
 use App\Models\Requests;
+use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Request;
 use App\Http\Requests\FormRequestRequest;
