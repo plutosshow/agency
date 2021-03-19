@@ -45,4 +45,7 @@ window.addEventListener('load', function () {
             message: ''
         }
     });
+    const loader = new Vue({
+        el: '#loader-vue',
+    });
 })

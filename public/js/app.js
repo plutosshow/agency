@@ -1860,14 +1860,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['flats'],
+  props: ['items'],
   mounted: function mounted() {
     console.log('mounted pagination');
   },
   methods: {
     onPaginate: function onPaginate(n) {
       this.$emit('onPaginate', n);
+      console.log(this.items);
     }
   }
 });
@@ -1932,7 +1934,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       json: [],
-      price: false
+      price: false,
+      items: []
     };
   },
   mounted: function mounted() {
@@ -1945,8 +1948,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('http://yuri.shcherba.loc/get/showListFlats').then(function (response) {
         _this.json = response.data;
-        _this.data = _this.json.allFlats.data;
-        console.log(_this.json);
+        _this.items = _this.json.allFlats;
       });
     },
     onPaginate: function onPaginate(n) {
@@ -1955,7 +1957,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n);
       axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then(function (response) {
         _this2.json = response.data;
-        console.log(_this2.json);
+        _this2.items = _this2.json.allFlats;
       }); // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
       //     .then(json => {
       //         this.json = json
@@ -2018,6 +2020,9 @@ window.addEventListener('load', function () {
     data: {
       message: ''
     }
+  });
+  var loader = new Vue({
+    el: '#loader-vue'
   });
 });
 
@@ -38103,16 +38108,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row w-100" }, [
     _c("div", { staticClass: "col-12 text-center" }, [
-      _vm.flats.last_page > 1
+      _vm.items.last_page > 1
         ? _c(
             "div",
             { staticClass: "site-pagination" },
-            _vm._l(_vm.flats.last_page, function(n) {
+            _vm._l(_vm.items.last_page, function(n) {
               return _c(
                 "a",
                 {
-                  class: _vm.flats.current_page == n ? "mr-1 active" : "mr-1",
-                  attrs: { href: _vm.flats.path + "?page=" + n },
+                  class: _vm.items.current_page == n ? "mr-1 active" : "mr-1",
+                  attrs: { href: _vm.items.path + "?page=" + n },
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -38156,7 +38161,7 @@ var render = function() {
     "div",
     { staticClass: "row mb-5" },
     [
-      _vm._l(_vm.json.allFlats.data, function(flat) {
+      _vm._l(_vm.items.data, function(flat) {
         return _c(
           "div",
           {
@@ -38231,7 +38236,7 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("pagination-component", {
-        attrs: { flats: _vm.json.allFlats },
+        attrs: { items: _vm.items },
         on: { onPaginate: _vm.onPaginate }
       })
     ],

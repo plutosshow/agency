@@ -26,8 +26,7 @@ class FlatsController extends Controller
             ->groupBy('img_flats.flat', 'flats.id')
             ->distinct()
             ->select('flats.*', 'img_flats.image')
-            ->get()->paginate(9);
-
+            ->get()->paginate(6);
         return  [
             'allFlats' => $flats,
             'slides'  => $this->sliderFlats()

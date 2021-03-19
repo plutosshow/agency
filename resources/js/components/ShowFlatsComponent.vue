@@ -1,7 +1,7 @@
 <template>
     <div class="row mb-5">
         <div class="col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center" v-for=
-            "flat in json.allFlats.data">
+            "flat in items.data">
             <a :href="'property/' + flat.id" class="prop-entry d-block">
                 <figure>
                     <img :src="flat.image" alt="Image" class="img-fluid">
@@ -32,8 +32,8 @@
             </a>
         </div>
         <pagination-component
-            v-bind:flats = 'json.allFlats'
-            @onPaginate = 'onPaginate'
+            v-bind:items='items'
+            @onPaginate='onPaginate'
         ></pagination-component>
     </div>
 </template>
@@ -47,6 +47,7 @@ export default {
         return {
             json: [],
             price: false,
+            items: [],
         }
     },
     mounted() {
@@ -54,28 +55,27 @@ export default {
         this.show()
     },
     methods: {
-        show: function (){
+        show: function () {
             axios.get('http://yuri.shcherba.loc/get/showListFlats').then((response) => {
                 this.json = response.data
-                this.data = this.json.allFlats.data
-                console.log(this.json)
+                this.items = this.json.allFlats
             });
         },
         onPaginate: function (n) {
             console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n)
             axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then((response) => {
                 this.json = response.data
-                console.log(this.json)
+                this.items = this.json.allFlats
             });
 
-                // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
-                //     .then(json => {
-                //         this.json = json
-                //         console.log(json)
-                //     })
-            },
+            // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
+            //     .then(json => {
+            //         this.json = json
+            //         console.log(json)
+            //     })
+        },
         format: function (price) {
-            if(price){
+            if (price) {
                 let priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)))
                 return priceFormat
             }
