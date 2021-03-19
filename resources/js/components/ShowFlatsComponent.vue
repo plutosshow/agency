@@ -1,7 +1,7 @@
 <template>
     <div class="row mb-5">
         <div class="col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center" v-for=
-            "flat in flats.data">
+            "flat in json.allFlats.data">
             <a :href="'property/' + flat.id" class="prop-entry d-block">
                 <figure>
                     <img :src="flat.image" alt="Image" class="img-fluid">
@@ -31,40 +31,49 @@
                 </div>
             </a>
         </div>
+        <pagination-component
+            v-bind:flats = 'json.allFlats'
+            @onPaginate = 'onPaginate'
+        ></pagination-component>
     </div>
 </template>
 
 <script>
 export default {
-    props: [
-        'flats'
-    ],
+    // props: [
+    //     'flats'
+    // ],
     data: function () {
         return {
-            // message: '',
+            json: [],
             price: false,
         }
     },
     mounted() {
         console.log('Component mounted.')
         this.show()
-
     },
     methods: {
-        show: function () {
-            console.log(this.flats)
+        show: function (){
+            axios.get('http://yuri.shcherba.loc/get/showListFlats').then((response) => {
+                this.json = response.data
+                this.data = this.json.allFlats.data
+                console.log(this.json)
+            });
         },
-        //     update: function () {
-        //         axios.get('/form/filter').then((response) => {
-        //             this.json = response.data
-        //             console.log(this.json)
-        //         });
-        //         // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
-        //         //     .then(json => {
-        //         //         this.json = json
-        //         //         console.log(json)
-        //         //     })
-        //     },
+        onPaginate: function (n) {
+            console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n)
+            axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then((response) => {
+                this.json = response.data
+                console.log(this.json)
+            });
+
+                // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
+                //     .then(json => {
+                //         this.json = json
+                //         console.log(json)
+                //     })
+            },
         format: function (price) {
             if(price){
                 let priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)))

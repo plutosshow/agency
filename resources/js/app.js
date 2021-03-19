@@ -27,6 +27,8 @@ require('./mask');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('show-flats-component', require('./components/ShowFlatsComponent').default);
+Vue.component('pagination-component', require('./components/PaginationComponent').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

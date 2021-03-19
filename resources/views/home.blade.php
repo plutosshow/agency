@@ -13,8 +13,7 @@
                 </div>
             </div>
             <div id="app">
-                <show-flats-component :flats="{{json_encode($allFlats)}}"></show-flats-component>
-                @include('templates.pagination', ['paginator' => $allFlats])
+             <show-flats-component {{--   :flats="{{json_encode($allFlats)}}"--}}></show-flats-component>
             </div>
         </div>
     </div>

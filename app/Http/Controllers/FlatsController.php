@@ -17,6 +17,10 @@ class FlatsController extends Controller
      */
     public function index()
     {
+        return  view('home', $this->showListFlats());
+    }
+
+    public function showListFlats(){
         $flats = DB::table('flats')
             ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
             ->groupBy('img_flats.flat', 'flats.id')
@@ -24,12 +28,10 @@ class FlatsController extends Controller
             ->select('flats.*', 'img_flats.image')
             ->get()->paginate(9);
 
-
-
-        return view('home', [
+        return  [
             'allFlats' => $flats,
             'slides'  => $this->sliderFlats()
-            ]);
+        ];
     }
 
     public function sliderFlats()
