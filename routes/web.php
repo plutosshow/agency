@@ -24,7 +24,8 @@ Route::get('/about', function () {
 Route::get('/property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');
 Route::post('form/request', 'App\Http\Controllers\Forms\RequestController@submit')->name('form.request');
 Route::get('get/showListFlats', 'App\Http\Controllers\FlatsController@showListFlats')->name('show.list');
-Route::get('form/filter', 'App\Http\Controllers\Forms\FilterController@test')->name('filter'); //todo
+Route::get('get/showAllFlats', 'App\Http\Controllers\FlatsController@showAllFlats')->name('show.allFlats');
+//Route::get('form/filter', 'App\Http\Controllers\Forms\FilterController@test')->name('filter'); //todo
 
 /*
  * Admin routes

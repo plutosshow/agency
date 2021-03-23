@@ -25,8 +25,6 @@ export default {
     methods: {
         onPaginate: function (n) {
             this.$emit('onPaginate', n)
-            console.log(this.items)
-
         }
     }
 }
