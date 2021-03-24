@@ -4,10 +4,13 @@
 @section('content')
     <div class="site-section site-section-sm  bg-light">
         <div class="container">
+{{--            @foreach($images as $image)--}}
+{{--                {{$image->image}}--}}
+{{--            @endforeach--}}
             <div class="row">
                 <div class="col-lg-8 pl-md-7">
                     <figure>
-                        <img src="{{ __('image') }}" alt="Image" class="img-fluid">
+                        @include('templates.slider-simple', $images)
                     </figure>
                     <div class="row mb-5">
                         <div class="col-md-6">
@@ -54,9 +57,7 @@
                     @include('templates.success-errors')
                     <h2 class="h4 text-black">Больше информации</h2>
                     <p>{{ $flat->comments }}</p>
-
-                        @include('templates.slider-simple')
-
+{{--                    @include('templates.slider-simple')--}}
                 </div>
 
 
@@ -67,5 +68,5 @@
             </div>
         </div>
     </div>
-
+    @include('templates.banner')
 @endsection

@@ -23,13 +23,13 @@ Route::get('/about', function () {
 */
 Route::get('/property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');
 Route::post('form/request', 'App\Http\Controllers\Forms\RequestController@submit')->name('form.request');
-Route::get('get/showListFlats', 'App\Http\Controllers\FlatsController@showListFlats')->name('show.list');
 Route::get('get/showAllFlats', 'App\Http\Controllers\FlatsController@showAllFlats')->name('show.allFlats');
-//Route::get('form/filter', 'App\Http\Controllers\Forms\FilterController@test')->name('filter'); //todo
 
 /*
  * Admin routes
 */
 Route::group(['middleware' => ['role:admin']], function () {
-    Route::get('/dashboard', 'App\Http\Controllers\Admin\DashboardController@index')->name('dashboard'); //todo
+    Route::get('admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@index')->name('dashboard');
+    Route::get('admin/forms/requests', 'App\Http\Controllers\Admin\FormRequest@index')->name('admin.form.request');
+
 });

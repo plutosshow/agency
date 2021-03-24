@@ -11,7 +11,7 @@ $(document).ready(function(){
     $('.slider-control').bxSlider({
         controls: true,
         auto: true,
-        pager: true,
+        pager: false,
         keyboardEnabled: true,
         mode: 'fade',
     });
