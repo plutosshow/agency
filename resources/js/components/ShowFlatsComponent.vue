@@ -8,15 +8,18 @@
         <!--            @FilterRooms='FilterRooms'-->
         <!--            @FilterPrice_min='FilterPrice_min'-->
         <!--            @FilterPrice_max='FilterPrice_max'-->
-        <filter-component
-            :items='items'
-            @filterChanges="filterChanges"
-            @submitChanges="submitChanges"
-        ></filter-component>
+        <div class="vue-filter">
+            <filter-component
+                :pageNumber="pageNumber"
+                :items='paginatedData'
+                @filterChanges="filterChanges"
+                @submitChanges="submitChanges"
+            ></filter-component>
+        </div>
         <div class="row mb-5">
             <div class="col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center"
                  v-if="items.length"
-                 v-for="flat in items"
+                 v-for="flat in paginatedData"
             >
                 <a :href="'property/' + flat.id" class="prop-entry d-block">
                     <figure>
@@ -47,27 +50,27 @@
                     </div>
                 </a>
             </div>
-            <div  v-if="!items.length" class="col-md-6 col-lg-4 mb-4 col-sm-12 alert alert-danger justify-content-center">
-                <div class="text-center">По вашему запросу квартиры были не найдены!!!</div>
+            <div  v-if="!items.length" class="col-md-12 col-sm-12 alert alert-primary justify-content-center">
+                <div class="text-center">По вашему запросу квартиры не найдены!!!</div>
             </div>
-            <!--            <pagination-component-->
-            <!--                v-bind:items='items'-->
-            <!--                @onPaginate='onPaginate'-->
-            <!--            ></pagination-component>-->
+                        <pagination-component
+                            :pageCount="pageCount"
+                            :pageNumber="pageNumber"
+                            @paginatedPage="paginatedPage"
+                        ></pagination-component>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    // props: [
-    //     'flats'
-    // ],
     data: function () {
         return {
             json: [],
             price: false,
             items: [],
+            pageNumber: 0,
+            size: 9
         }
     },
     mounted() {
@@ -75,42 +78,38 @@ export default {
         //this.show()
         this.showAll()
     },
-    computed: {},
+    computed: {
+        pageCount(){
+            let l = this.items.length,
+                s = this.size;
+            console.log(Math.ceil(l/s))
+            return Math.ceil(l/s);
+        },
+        paginatedData(){
+            const start = this.pageNumber * this.size,
+                end = start + this.size;
+            return   this.items.slice(start, end);
+        }
+    },
     methods: {
-        // show: function () {
-        //     axios.get('http://yuri.shcherba.loc/get/showListFlats').then((response) => {
-        //         this.json = response.data
-        //         this.items = this.json.allFlats
-        //     });
-        // },
         showAll: function () {
             axios.get('http://yuri.shcherba.loc/get/showAllFlats').then((response) => {
                 this.json = response.data
                 this.items = this.json.allFlats
-                console.log(this.items)
             });
         },
         submitChanges: function () {
             this.showAll()
         },
-        // onPaginate: function (n) {
-        //     console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n)
-        //     axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then((response) => {
-        //         this.json = response.data
-        //         this.items = this.json.allFlats
-        //     });
-
-        // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
-        //     .then(json => {
-        //         this.json = json
-        //         console.log(json)
-        //     })
-        // },
         format: function (price) {
             if (price) {
                 let priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)))
                 return priceFormat
+                this.filter = true
             }
+        },
+        paginatedPage: function (currentPage){
+            this.pageNumber = currentPage
         },
         filterChanges: function (livedSquare, commonSquare, location, rooms, price_min, price_max) {
             if (livedSquare != '') {
@@ -136,6 +135,10 @@ export default {
             if (price_max != '') {
                 let filtredList = this.items.filter(t => t.price <= price_max);
                 this.items = filtredList
+            }
+            if(livedSquare == '' && commonSquare == '' && location == '' && rooms == ''
+                && price_min == '' && price_max == ''){
+                this.showAll()
             }
         },
     }

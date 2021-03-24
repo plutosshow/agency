@@ -1,12 +1,10 @@
 <template>
     <div class="row w-100">
         <div class="col-12 text-center">
-
-            <div class="site-pagination" v-if="items.last_page > 1">
-                <a v-for="n in items.last_page"
-                   :class="items.current_page == n ? 'mr-1 active' : 'mr-1' "
-                   :href="items.path + '?page=' + n"
-                   @click.prevent="onPaginate(n)">
+            <div class="site-pagination" v-if="pageCount > 1">
+                <a v-for="n in pageCount"
+                   :class="pageNumber + 1 == n ? 'mr-1 active' : 'mr-1' "
+                   @click.prevent="paginatedPage(n-1)">
                     {{ n }}
                 </a>
             </div>
@@ -17,15 +15,22 @@
 <script>
 export default {
     props: [
-        'items'
+        'pageCount',
+        'pageNumber',
     ],
     mounted() {
         console.log('mounted pagination')
     },
     methods: {
-        onPaginate: function (n) {
-            this.$emit('onPaginate', n)
+        paginatedPage: function (n) {
+            this.$emit('paginatedPage', n)
         }
     }
 }
 </script>
+
+<style scoped>
+    a {
+        cursor: pointer
+    }
+</style>

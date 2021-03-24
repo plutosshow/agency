@@ -1,15 +1,15 @@
 <template>
     <div class="py-5">
         <div class="container">
-            <form class="row mb-5">
+            <form class="row mb-5" v-if="pageNumber==0">
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="select-wrap">
-                        <input @change="filterChanges" v-model="livedSquare" name="livedSquare" id="livedSquare" class="form-control d-block rounded-0" type="number" placeholder="Жилая площадь от">
+                        <input @keyup="filterChanges" v-model="livedSquare" name="livedSquare" id="livedSquare" class="form-control d-block rounded-0" type="number" placeholder="Жилая площадь от">
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="select-wrap">
-                        <input @change="filterChanges" v-model="commonSquare" name="commonSquare" id="commonSquare" class="form-control d-block rounded-0" type="number" placeholder="Общая площадь от">
+                        <input @keyup="filterChanges" v-model="commonSquare" name="commonSquare" id="commonSquare" class="form-control d-block rounded-0" type="number" placeholder="Общая площадь от">
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -37,12 +37,12 @@
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <div class="mb-4">
                         <label>Цена от</label>
-                        <input @change="filterChanges" v-model="price_min" type="number" class="form-control" name="Price_min" placeholder="0 руб">
+                        <input @keyup="filterChanges" v-model="price_min" type="number" class="form-control" name="Price_min" placeholder="0 руб">
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <label>Цена до</label>
-                    <input @change="filterChanges" v-model="price_max" type="number" class="form-control" name="Price_max" placeholder="0 руб">
+                    <input @keyup="filterChanges" v-model="price_max" type="number" class="form-control" name="Price_max" placeholder="0 руб">
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <label>Поиск по вашему желанию</label>
@@ -79,7 +79,8 @@
 <script>
     export default {
         props: [
-            'items'
+            'items',
+            'pageNumber'
         ],
         data: function () {
             return {
@@ -92,14 +93,12 @@
             }
         },
         mounted() {
-            console.log(213123)
             console.log( this.items)
         },
         methods: {
             filterChanges () {
                 this.$emit('filterChanges', this.livedSquare, this.commonSquare,
                     this.location, this.rooms, this.price_min, this.price_max)
-            console.log(this.location)
             },
             submitChanges () {
                 event.preventDefault();
