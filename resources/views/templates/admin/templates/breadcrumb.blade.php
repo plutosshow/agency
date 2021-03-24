@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">{{_('Приборная панель')}}</h1>
+                <h1 class="m-0">{{$breadcrumb}}</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -14,7 +14,7 @@
                             Приборная панель
                         @endif
                     </li>
-                    @if($breadcrumb ?? '')
+                    @if($breadcrumb != 'Приборная панель')
                         <li class="breadcrumb-item active">
                            {{$breadcrumb}}
                         </li>

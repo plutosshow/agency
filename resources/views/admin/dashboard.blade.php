@@ -5,7 +5,7 @@
     @include('templates.admin.templates.side-bar',['active' => 'dashboard'])
     @include('templates.admin.templates.navbar')
     <div class="content-wrapper">
-    @include('templates.admin.templates.breadcrumb', ['active' => 'dashboard'])
+    @include('templates.admin.templates.breadcrumb', ['active' => 'dashboard','breadcrumb'=>'Приборная панель'])
         <div class="content">
             <div class="container-fluid">
                 <div class="row">

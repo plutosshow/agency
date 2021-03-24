@@ -29,6 +29,8 @@ require('./mask');
 Vue.component('show-flats-component', require('./components/ShowFlatsComponent').default);
 Vue.component('pagination-component', require('./components/PaginationComponent').default);
 Vue.component('filter-component', require('./components/FilterComponent').default);
+Vue.component('form-request', require('./components/admin/FormRequest').default);
+
 
 
 

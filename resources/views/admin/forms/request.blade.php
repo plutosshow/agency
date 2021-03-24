@@ -10,12 +10,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="card-header border-0 text-center">
-                                <h5>
-                                    <i class="fa fa-users" aria-hidden="true"></i>
-                                    {{_('Статистика по пользователям')}}
-                                </h5>
+                        <div class="card bg-light">
+                            <div class="card-body" id="app">
+                                <form-request></form-request>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,11 @@ Route::get('get/showAllFlats', 'App\Http\Controllers\FlatsController@showAllFlat
 */
 Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@index')->name('dashboard');
-    Route::get('admin/forms/requests', 'App\Http\Controllers\Admin\FormRequest@index')->name('admin.form.request');
+    Route::get('admin/forms/requests', 'App\Http\Controllers\Admin\FormRequestController@index')->name('admin.form.request');
+    /*
+    *Запросы к базе данных
+    */
+    Route::get('admin/forms/requests/getAll', 'App\Http\Controllers\Admin\FormRequestController@allRequests');
+    Route::get('admin/forms/requests/destroyRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@destroyRequest');
 
 });

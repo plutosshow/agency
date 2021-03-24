@@ -2,7 +2,9 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name') }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -23,22 +25,28 @@
 
                         @if (Route::has('register'))
                             <li class="nav-item">
-                                <a class="nav-link text-uppercase" href="{{ route('register') }}">{{ __('РЕГИСТРАЦИЯ') }}</a>
+                                <a class="nav-link text-uppercase"
+                                   href="{{ route('register') }}">{{ __('РЕГИСТРАЦИЯ') }}</a>
                             </li>
                         @endif
                     @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-uppercase" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-uppercase" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @role('admin')
+                                    <a class="dropdown-item text-uppercase" href="{{ route('dashboard') }}">
+                                        {{ __('Панель управления') }}
+                                    </a>
+                                @endrole
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('ВЫЙТИ') }}
                                 </a>
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
