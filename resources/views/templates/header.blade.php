@@ -5,6 +5,13 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            @role('admin')
+{{--            <ul class="navbar-nav ml-auto d-flex justify-content-start">--}}
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>--}}
+{{--                </li>--}}
+{{--            </ul>--}}
+            @endrole
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto mb-2 mb-lg-0 d-flex justify-content-end">
                     <li class="nav-item">

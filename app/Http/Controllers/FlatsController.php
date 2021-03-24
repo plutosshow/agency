@@ -33,6 +33,18 @@ class FlatsController extends Controller
         ];
     }
 
+    public function showAllFlats(){
+        $flats = DB::table('flats')
+            ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
+            ->groupBy('img_flats.flat', 'flats.id')
+            ->distinct()
+            ->select('flats.*', 'img_flats.image')
+            ->get();
+        return  [
+            'allFlats' => $flats,
+        ];
+    }
+
     public function sliderFlats()
     {
         $slides = DB::table('flats')

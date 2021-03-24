@@ -1834,6 +1834,131 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['items'],
+  data: function data() {
+    return {
+      location: "",
+      rooms: "",
+      price_min: "",
+      price_max: "",
+      livedSquare: "",
+      commonSquare: ""
+    };
+  },
+  mounted: function mounted() {
+    console.log(213123);
+    console.log(this.items);
+  },
+  methods: {
+    filterChanges: function filterChanges() {
+      this.$emit('filterChanges', this.livedSquare, this.commonSquare, this.location, this.rooms, this.price_min, this.price_max);
+      console.log(this.location);
+    },
+    submitChanges: function submitChanges() {
+      event.preventDefault();
+      this.rooms = '';
+      this.commonSquare = '';
+      this.livedSquare = '';
+      this.location = '';
+      this.price_max = '';
+      this.price_min = '';
+      this.$emit('submitChanges');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PaginationComponent.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PaginationComponent.vue?vue&type=script&lang=js& ***!
@@ -1869,7 +1994,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     onPaginate: function onPaginate(n) {
       this.$emit('onPaginate', n);
-      console.log(this.items);
     }
   }
 });
@@ -1927,6 +2051,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // props: [
   //     'flats'
@@ -1939,35 +2083,94 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
-    this.show();
+    console.log('Component mounted.'); //this.show()
+
+    this.showAll();
   },
+  computed: {},
   methods: {
-    show: function show() {
+    // show: function () {
+    //     axios.get('http://yuri.shcherba.loc/get/showListFlats').then((response) => {
+    //         this.json = response.data
+    //         this.items = this.json.allFlats
+    //     });
+    // },
+    showAll: function showAll() {
       var _this = this;
 
-      axios.get('http://yuri.shcherba.loc/get/showListFlats').then(function (response) {
+      axios.get('http://yuri.shcherba.loc/get/showAllFlats').then(function (response) {
         _this.json = response.data;
         _this.items = _this.json.allFlats;
+        console.log(_this.items);
       });
     },
-    onPaginate: function onPaginate(n) {
-      var _this2 = this;
-
-      console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n);
-      axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then(function (response) {
-        _this2.json = response.data;
-        _this2.items = _this2.json.allFlats;
-      }); // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
-      //     .then(json => {
-      //         this.json = json
-      //         console.log(json)
-      //     })
+    submitChanges: function submitChanges() {
+      this.showAll();
     },
+    // onPaginate: function (n) {
+    //     console.log('http://yuri.shcherba.loc/get/showListFlats?page=' + n)
+    //     axios.get('http://yuri.shcherba.loc/get/showListFlats?page=' + n).then((response) => {
+    //         this.json = response.data
+    //         this.items = this.json.allFlats
+    //     });
+    // fetch('http://yuri.shcherba.loc/form/filter').then(response=>response.json())
+    //     .then(json => {
+    //         this.json = json
+    //         console.log(json)
+    //     })
+    // },
     format: function format(price) {
       if (price) {
         var priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)));
         return priceFormat;
+      }
+    },
+    filterChanges: function filterChanges(livedSquare, commonSquare, location, rooms, price_min, price_max) {
+      if (livedSquare != '') {
+        var filtredList = this.items.filter(function (t) {
+          return t.livedSquare >= livedSquare;
+        });
+        this.items = filtredList;
+      }
+
+      if (commonSquare != '') {
+        var _filtredList = this.items.filter(function (t) {
+          return t.commonSquare >= commonSquare;
+        });
+
+        this.items = _filtredList;
+      }
+
+      if (location != '') {
+        var _filtredList2 = this.items.filter(function (t) {
+          return t.city === location;
+        });
+
+        this.items = _filtredList2;
+      }
+
+      if (rooms != '') {
+        var _filtredList3 = this.items.filter(function (t) {
+          return rooms != 5 ? t.rooms == rooms : t.rooms >= rooms;
+        });
+
+        this.items = _filtredList3;
+      }
+
+      if (price_min != '') {
+        var _filtredList4 = this.items.filter(function (t) {
+          return t.price >= price_min;
+        });
+
+        this.items = _filtredList4;
+      }
+
+      if (price_max != '') {
+        var _filtredList5 = this.items.filter(function (t) {
+          return t.price <= price_max;
+        });
+
+        this.items = _filtredList5;
       }
     }
   }
@@ -2008,6 +2211,7 @@ __webpack_require__(/*! ./mask */ "./resources/js/mask.js");
 
 Vue.component('show-flats-component', __webpack_require__(/*! ./components/ShowFlatsComponent */ "./resources/js/components/ShowFlatsComponent.vue").default);
 Vue.component('pagination-component', __webpack_require__(/*! ./components/PaginationComponent */ "./resources/js/components/PaginationComponent.vue").default);
+Vue.component('filter-component', __webpack_require__(/*! ./components/FilterComponent */ "./resources/js/components/FilterComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -37943,6 +38147,45 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./resources/js/components/FilterComponent.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/FilterComponent.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FilterComponent.vue?vue&type=template&id=1c992a4a& */ "./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a&");
+/* harmony import */ var _FilterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FilterComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/FilterComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _FilterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/FilterComponent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/PaginationComponent.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/PaginationComponent.vue ***!
@@ -38021,6 +38264,22 @@ component.options.__file = "resources/js/components/ShowFlatsComponent.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/FilterComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/FilterComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FilterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FilterComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FilterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/PaginationComponent.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/PaginationComponent.vue?vue&type=script&lang=js& ***!
@@ -38050,6 +38309,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFlatsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ShowFlatsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ShowFlatsComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFlatsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a& ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FilterComponent_vue_vue_type_template_id_1c992a4a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./FilterComponent.vue?vue&type=template&id=1c992a4a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a&");
+
 
 /***/ }),
 
@@ -38083,6 +38359,320 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFlatsComponent_vue_vue_type_template_id_27e7ac0b___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFlatsComponent_vue_vue_type_template_id_27e7ac0b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ShowFlatsComponent.vue?vue&type=template&id=27e7ac0b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ShowFlatsComponent.vue?vue&type=template&id=27e7ac0b&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FilterComponent.vue?vue&type=template&id=1c992a4a& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "py-5" }, [
+    _c("div", { staticClass: "container" }, [
+      _c("form", { staticClass: "row mb-5" }, [
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("div", { staticClass: "select-wrap" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.livedSquare,
+                  expression: "livedSquare"
+                }
+              ],
+              staticClass: "form-control d-block rounded-0",
+              attrs: {
+                name: "livedSquare",
+                id: "livedSquare",
+                type: "number",
+                placeholder: "Жилая площадь от"
+              },
+              domProps: { value: _vm.livedSquare },
+              on: {
+                change: _vm.filterChanges,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.livedSquare = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("div", { staticClass: "select-wrap" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.commonSquare,
+                  expression: "commonSquare"
+                }
+              ],
+              staticClass: "form-control d-block rounded-0",
+              attrs: {
+                name: "commonSquare",
+                id: "commonSquare",
+                type: "number",
+                placeholder: "Общая площадь от"
+              },
+              domProps: { value: _vm.commonSquare },
+              on: {
+                change: _vm.filterChanges,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.commonSquare = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("div", { staticClass: "select-wrap" }, [
+            _c("span", { staticClass: "icon icon-arrow_drop_down" }),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.location,
+                    expression: "location"
+                  }
+                ],
+                staticClass: "select-clear form-control d-block rounded-0",
+                attrs: { name: "location", id: "location" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.location = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    _vm.filterChanges
+                  ]
+                }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { disabled: "", selected: "", value: "" } },
+                  [_vm._v("Город")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.items, function(item) {
+                  return _c("option", [_vm._v(_vm._s(item.city))])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("div", { staticClass: "select-wrap" }, [
+            _c("span", { staticClass: "icon icon-arrow_drop_down" }),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.rooms,
+                    expression: "rooms"
+                  }
+                ],
+                staticClass: "select-clear form-control d-block rounded-0",
+                attrs: { name: "rooms", id: "rooms" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.rooms = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    _vm.filterChanges
+                  ]
+                }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { disabled: "", selected: "", value: "" } },
+                  [_vm._v("Количество комнат")]
+                ),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("1")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("2")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("3")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "4" } }, [_vm._v("4")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "5" } }, [_vm._v("5+")])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("div", { staticClass: "mb-4" }, [
+            _c("label", [_vm._v("Цена от")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.price_min,
+                  expression: "price_min"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "number",
+                name: "Price_min",
+                placeholder: "0 руб"
+              },
+              domProps: { value: _vm.price_min },
+              on: {
+                change: _vm.filterChanges,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.price_min = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("label", [_vm._v("Цена до")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.price_max,
+                expression: "price_max"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "number", name: "Price_max", placeholder: "0 руб" },
+            domProps: { value: _vm.price_max },
+            on: {
+              change: _vm.filterChanges,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.price_max = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 col-md-4 col-lg-3 mb-4" }, [
+          _c("label", [_vm._v("Поиск по вашему желанию")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass:
+              "btn btn-primary btn-block form-control-same-height rounded-0",
+            attrs: {
+              id: "filter-btn",
+              type: "button",
+              value: "Сбросить фильтры поиска"
+            },
+            on: { click: _vm.submitChanges }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0)
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6 col-lg-4 mb-3 mb-lg-0" }, [
+        _c("div", { staticClass: "feature d-flex align-items-start" }, [
+          _c("span", { staticClass: "icon mr-3 flaticon-house" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text" }, [
+            _c("h2", { staticClass: "mt-0" }, [
+              _vm._v("Большое количество предложений")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Недвижимость от бюджетной до элитной.")])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6 col-lg-4 mb-3 mb-lg-0" }, [
+        _c("div", { staticClass: "feature d-flex align-items-start" }, [
+          _c("span", { staticClass: "icon mr-3 flaticon-location" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text" }, [
+            _c("h2", { staticClass: "mt-0" }, [
+              _vm._v("Расположение недвижимости")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Выбери город, в котором ищешь недвижимость")])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
 
 
 /***/ }),
@@ -38156,88 +38746,116 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "row mb-5" },
     [
-      _vm._l(_vm.items.data, function(flat) {
-        return _c(
-          "div",
-          {
-            staticClass:
-              "col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center"
-          },
-          [
-            _c(
-              "a",
-              {
-                staticClass: "prop-entry d-block",
-                attrs: { href: "property/" + flat.id }
-              },
-              [
-                _c("figure", [
-                  _c("img", {
-                    staticClass: "img-fluid",
-                    attrs: { src: flat.image, alt: "Image" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "prop-text" }, [
-                  _c("div", { staticClass: "inner" }, [
-                    _c("span", { staticClass: "price rounded" }, [
-                      _vm._v("₽ " + _vm._s(_vm.format(flat.price)) + "  ")
-                    ]),
-                    _vm._v(" "),
-                    _c("h3", { staticClass: "title" }, [
-                      _vm._v(_vm._s(flat.region))
-                    ]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "location" }, [
-                      _vm._v(
-                        _vm._s(flat.city) +
-                          ", " +
-                          _vm._s(flat.street) +
-                          ", " +
-                          _vm._s(flat.zip)
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "prop-more-info" }, [
-                    _c("div", { staticClass: "inner d-flex" }, [
-                      _c("div", { staticClass: "col" }, [
-                        _c("span", [_vm._v("Площадь:")]),
-                        _vm._v(" "),
-                        _c("strong", [
-                          _vm._v(_vm._s(flat.commonSquare) + " м"),
-                          _c("sup", [_vm._v("2")])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _c("span", [_vm._v("Этаж:")]),
-                        _vm._v(" "),
-                        _c("strong", [_vm._v(_vm._s(flat.floor))])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col" }, [
-                        _c("span", [_vm._v("Тип:")]),
-                        _vm._v(" "),
-                        _c("strong", [_vm._v(_vm._s(flat.type))])
-                      ])
-                    ])
-                  ])
-                ])
-              ]
-            )
-          ]
-        )
+      _c("filter-component", {
+        attrs: { items: _vm.items },
+        on: {
+          filterChanges: _vm.filterChanges,
+          submitChanges: _vm.submitChanges
+        }
       }),
       _vm._v(" "),
-      _c("pagination-component", {
-        attrs: { items: _vm.items },
-        on: { onPaginate: _vm.onPaginate }
-      })
+      _c(
+        "div",
+        { staticClass: "row mb-5" },
+        [
+          _vm._l(_vm.items, function(flat) {
+            return _vm.items.length
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-md-6 col-lg-4 mb-4 col-sm-12 justify-content-center"
+                  },
+                  [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "prop-entry d-block",
+                        attrs: { href: "property/" + flat.id }
+                      },
+                      [
+                        _c("figure", [
+                          _c("img", {
+                            staticClass: "img-fluid",
+                            attrs: { src: flat.image, alt: "Image" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "prop-text" }, [
+                          _c("div", { staticClass: "inner" }, [
+                            _c("span", { staticClass: "price rounded" }, [
+                              _vm._v(
+                                "₽ " + _vm._s(_vm.format(flat.price)) + "  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("h3", { staticClass: "title" }, [
+                              _vm._v(_vm._s(flat.region))
+                            ]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "location" }, [
+                              _vm._v(
+                                _vm._s(flat.city) +
+                                  ", " +
+                                  _vm._s(flat.street) +
+                                  ", " +
+                                  _vm._s(flat.zip)
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "prop-more-info" }, [
+                            _c("div", { staticClass: "inner d-flex" }, [
+                              _c("div", { staticClass: "col" }, [
+                                _c("span", [_vm._v("Площадь:")]),
+                                _vm._v(" "),
+                                _c("strong", [
+                                  _vm._v(_vm._s(flat.commonSquare) + " м"),
+                                  _c("sup", [_vm._v("2")])
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col" }, [
+                                _c("span", [_vm._v("Этаж:")]),
+                                _vm._v(" "),
+                                _c("strong", [_vm._v(_vm._s(flat.floor))])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col" }, [
+                                _c("span", [_vm._v("Тип:")]),
+                                _vm._v(" "),
+                                _c("strong", [_vm._v(_vm._s(flat.type))])
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          !_vm.items.length
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "col-md-6 col-lg-4 mb-4 col-sm-12 alert alert-danger justify-content-center"
+                },
+                [
+                  _c("div", { staticClass: "text-center" }, [
+                    _vm._v("По вашему запросу квартиры были не найдены!!!")
+                  ])
+                ]
+              )
+            : _vm._e()
+        ],
+        2
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
