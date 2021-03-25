@@ -8,7 +8,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label>Телефон</label>
-                    <input type="text" v-model="req.phone" name="phone" class="form-control" placeholder="+7-(000)-000-00-00">
+                    <input type="tel" v-mask="'+7-(###)-###-##-##'" v-model="req.phone" name="phone" class="form-control" placeholder="+7-(000)-000-00-00">
                 </div>
             </div>
             <div class="row">
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import {TheMask} from 'vue-the-mask'
 export default {
     props: [
         'request',
@@ -65,6 +66,9 @@ export default {
         refresh: function () {
             this.$emit('refresh')
         }
+    },
+    components: {
+        TheMask
     }
 }
 </script>

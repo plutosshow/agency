@@ -18,7 +18,7 @@
             <table class="table table-white">
                 <thead>
                 <tr>
-                    <th scope="col"><input id="checkAll" type="checkbox"></th>
+                    <th scope="col"><input @change="checked(checkAll=true)" id="checkAll" v-model="checkAll" type="checkbox"></th>
                     <th scope="col">#</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Телефон</th>
@@ -26,8 +26,8 @@
                 </tr>
                 </thead>
                 <tbody v-for="(item,index) in items">
-                <tr>
-                    <th id="item.id" scope="row"><input type="checkbox"></th>
+                <tr :class="{ done: checkedList[index] }">
+                    <th scope="row"><input @change="checked(index + 1 )" :id="item.id" v-model="checkedNames" :value="item.id" type="checkbox" ></th>
                     <td>{{ index + 1 }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.phone }}</td>
@@ -59,14 +59,17 @@
 </template>
 <script>
 export default {
-
     data: function () {
         return {
             items: [],
             display: false,
             request: [],
             createDisplay: false,
-            updateSuccess: false
+            updateSuccess: false,
+            checkedNames: [],
+            isActive: true,
+            checkedList: [],
+            checkAll: false
         }
     },
     mounted() {
@@ -99,8 +102,25 @@ export default {
         },
         createRequest: function () {
             this.createDisplay = true
-            console.log( this.createDisplay)
+        },
+        checked: function (id) {
+            // if(checkAll){
+            //     let count = this.items.length
+            //     console.log(this.items)
+            //     // for(const k=1; k <= count; k+1){
+            //     //     this.checkedList[k] = true
+            //     // }
+            //     console.log(count)
+            // }else{
+                this.checkedList[id-1] = !this.checkedList[id-1]
+            // }
         }
     }
 }
 </script>
+
+<style scoped>
+    .done   {
+        background-color: lightblue;
+    }
+</style>

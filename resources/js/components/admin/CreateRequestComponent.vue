@@ -8,7 +8,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label>Телефон</label>
-                    <input type="text" v-model="phone" name="phone" class="form-control" placeholder="+7-(000)-000-00-00">
+                    <input type="tel" v-mask="'+7-(###)-###-##-##'" v-model="phone" name="phone" class="phone form-control" placeholder="+7-(000)-000-00-00">
                 </div>
             </div>
             <div class="row">
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import {TheMask} from 'vue-the-mask'
+
 export default {
     data: function () {
         return {
@@ -32,7 +34,6 @@ export default {
         submitForm: function () {
             let takeData = this.takeData()
             let self = this
-            console.log(takeData)
             axios.post('http://yuri.shcherba.loc/admin/forms/requests/createRequest', takeData, {
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -57,6 +58,9 @@ export default {
         refresh: function () {
             this.$emit('refresh')
         }
+    },
+    components: {
+        TheMask
     }
 
 }
