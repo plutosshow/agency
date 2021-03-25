@@ -10,10 +10,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card bg-light">
-                            <div class="card-body" id="app">
-                                <form-request></form-request>
-                            </div>
+                        <div class="card bg-light" id="app">
+                            <meta name="csrf-token" content="{{ csrf_token() }}">
+                            <form-request></form-request>
                         </div>
                     </div>
                 </div>

@@ -6,13 +6,13 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue').default;
-
 require('./slider');
 
 require('./jquery.mask.min');
 
 require('./mask');
+
+window.Vue = require('vue').default;
 
 
 /**
@@ -30,6 +30,10 @@ Vue.component('show-flats-component', require('./components/ShowFlatsComponent')
 Vue.component('pagination-component', require('./components/PaginationComponent').default);
 Vue.component('filter-component', require('./components/FilterComponent').default);
 Vue.component('form-request', require('./components/admin/FormRequest').default);
+Vue.component('detail-request', require('./components/admin/DetailRequestComponent').default);
+Vue.component('create-request', require('./components/admin/CreateRequestComponent').default);
+
+
 
 
 

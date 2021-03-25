@@ -37,5 +37,10 @@ Route::group(['middleware' => ['role:admin']], function () {
     */
     Route::get('admin/forms/requests/getAll', 'App\Http\Controllers\Admin\FormRequestController@allRequests');
     Route::get('admin/forms/requests/destroyRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@destroyRequest');
+    Route::get('admin/forms/requests/getRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@getRequest');
+    Route::post('admin/forms/requests/updateRequest', 'App\Http\Controllers\Admin\FormRequestController@updateRequest');
+    Route::post('admin/forms/requests/createRequest', 'App\Http\Controllers\Admin\FormRequestController@createRequest');
+
+
 
 });
