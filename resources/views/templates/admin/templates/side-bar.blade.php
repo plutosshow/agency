@@ -24,7 +24,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="{{route('dashboard')}}" class="nav-link {{($active == 'dashboard') ? "active" : ""}}">
+                    <a href="{{route('dashboard')}}" class="nav-link {{(($activeParent ?? '') == 'dashboard') ? "active" : "" ?? ''}}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             {{_('Приборная панель')}}
@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link {{($active == 'forms') ? "active" : ""}}">
+                    <a href="#" class="nav-link {{(($activeParent ?? '') == 'forms') ? "active" : "" ?? ''}}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             {{_('Формы')}}
@@ -41,7 +41,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route("admin.form.request")}}" class="nav-link">
+                            <a href="{{route("admin.form.request")}}" class="nav-link {{(($active ?? '') == 'requests') ? "active" : "" ?? ''}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>{{_('Запрос на звонок')}}</p>
                             </a>
@@ -49,7 +49,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{(($activeParent ?? '') == 'tables') ? "active" : "" ?? ''}}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             {{_('Таблицы')}}
@@ -58,13 +58,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{route('admin.table.users')}}" class="nav-link {{(($active ?? '') == 'users') ? "active" : "" ?? ''}}">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 <p>{{_('Пользователи')}}</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{route('admin.table.flats')}}" class="nav-link {{(($active ?? '') == 'flats') ? "active" : "" ?? ''}}">
                                 <i class="fa fa-home" aria-hidden="true"></i>
                                 <p>{{_('Квартиры')}}</p>
                             </a>

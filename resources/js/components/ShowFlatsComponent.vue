@@ -74,15 +74,12 @@ export default {
         }
     },
     mounted() {
-        console.log('Component mounted.')
-        //this.show()
         this.showAll()
     },
     computed: {
         pageCount(){
             let l = this.items.length,
                 s = this.size;
-            console.log(Math.ceil(l/s))
             return Math.ceil(l/s);
         },
         paginatedData(){
@@ -96,6 +93,7 @@ export default {
             axios.get('http://yuri.shcherba.loc/get/showAllFlats').then((response) => {
                 this.json = response.data
                 this.items = this.json.allFlats
+                console.log(this.items.length)
             });
         },
         submitChanges: function () {

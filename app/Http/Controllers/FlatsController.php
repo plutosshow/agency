@@ -26,6 +26,7 @@ class FlatsController extends Controller
             ->groupBy('img_flats.flat', 'flats.id')
             ->distinct()
             ->select('flats.*', 'img_flats.image')
+            ->where('relevant', '1')
             ->get();
         return  [
             'allFlats' => $flats,
@@ -52,6 +53,10 @@ class FlatsController extends Controller
     public function createFlat()
     {
         return view('createFlat');
+    }
+
+    public function admin(){
+        return view('admin.tables.flats');
     }
 
     /**
@@ -133,6 +138,8 @@ class FlatsController extends Controller
      */
     public function destroyFlat($id)
     {
-        //
+        DB::table('flats')->where('id', $id)->update([
+            'relevant'  => '0'
+        ]);
     }
 }

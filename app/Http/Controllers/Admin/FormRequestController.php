@@ -41,6 +41,7 @@ class FormRequestController extends Controller
             'updated_at'=> $date
         ]);
     }
+
     public function createRequest(Request $request)
     {
         $date = Carbon::now();

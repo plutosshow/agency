@@ -1,14 +1,14 @@
 <template>
-    <div class="card-body">
-        <div v-if="!display && !createDisplay">
+    <div class="card-body table-responsive-xl">
+        <div v-if="!displayUpdate && !displayCreate">
             <div class="row">
                 <div class="col-md-11">
-                    <button @click="createRequest" class="btn btn-primary">Создать новый запрос</button>
-                    <button class="btn btn-danger" @click.prevent="deleteChecked"> Удалить отмеченные</button>
+                    <button @click="addNewUser" class="btn btn-primary">Добавить пользователя</button>
+                    <button @click="deleteChecked" class="btn btn-danger" >Удалить отмеченные</button>
 
                 </div>
                 <div class="col-md-1">
-                    <button @click='refresh' class="btn"><i class="fas fa-sync-alt"></i></button>
+                    <button @click="refresh" class="btn"><i class="fas fa-sync-alt"></i></button>
                 </div>
             </div>
             <div class="row">
@@ -20,8 +20,11 @@
                     <th scope="col"><input @change="checkedAll" id="checkAll" v-model="checkAll"
                                            type="checkbox"></th>
                     <th scope="col">#</th>
+                    <th scope="col">Фамилия</th>
                     <th scope="col">Имя</th>
-                    <th scope="col">Телефон</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Эл. почта</th>
+                    <th scope="col">Роль</th>
                     <th scope="col">Команды</th>
                 </tr>
                 </thead>
@@ -30,93 +33,99 @@
                     <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
                     <td>{{ index + 1 }}</td>
+                    <td>{{ item.surname }}</td>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.phone }}</td>
+                    <td>{{ item.patronymic}}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.role_name }}</td>
                     <td>
-                        <button @click="getRequest(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
+                        <button @click="updateUser(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
                         </button>
-                        <button @click="destroyRequest(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
+                        <button @click="destroyUser(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
                         </button>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div v-if="display">
-            <button @click='refresh' class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        <div v-if="displayUpdate">
+            <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <hr>
-            <detail-request
-                :request="request"
+            <update-users-component
+                :items="setUser"
                 @refresh="refresh"
-            ></detail-request>
+            ></update-users-component>
         </div>
-        <div v-if="createDisplay">
-            <button @click='refresh' class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+        <div v-if="displayCreate">
+            <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <hr>
-            <create-request
+            <create-users-component
                 @refresh="refresh"
-            ></create-request>
+            ></create-users-component>
         </div>
     </div>
 </template>
+
 <script>
+import CreateUsersComponent from "./CreateUsersComponent";
 export default {
+    components: {CreateUsersComponent},
     data: function () {
         return {
             items: [],
-            display: false,
-            request: [],
-            createDisplay: false,
+            displayUpdate: false,
+            displayCreate: false,
+            checkAll: false,
             checkedNames: [],
             checkedList: [],
-            checkAll: false,
             destroylist: [],
+            setUser: []
         }
     },
     mounted() {
-        this.showAll()
+        this.showAllUsers()
     },
     methods: {
-        showAll: function () {
-            axios.get('http://yuri.shcherba.loc/admin/forms/requests/getAll').then((response) => {
+        showAllUsers: function () {
+            axios.get('http://yuri.shcherba.loc/admin/tables/users/getAllUsers').then((response) => {
                 this.items = response.data
             });
         },
-        destroyRequest: function (id) {
-            const check = confirm('Вы уверенны, что хотите отметить данный запрос как выполненный?')
-            if (check)
-                this.deleteById(id)
-        },
-        getRequest: function (id) {
-            this.display = true
-            axios.get('http://yuri.shcherba.loc/admin/forms/requests/getRequest/' + id).then((response) => {
-                this.request = response.data
-            });
-        },
         refresh: function () {
+            this.displayUpdate = false
+            this.displayCreate = false
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
-            this.display = false
-            this.createDisplay = false
-            this.showAll()
-            console.log()
+            this.destroylist = []
+            this.showAllUsers()
         },
-        createRequest: function () {
-            this.createDisplay = true
+        deleteById: function (id) {
+            axios.get('http://yuri.shcherba.loc/admin/tables/users/destroyUser/' + id).then((response) => {
+                this.items = response.data
+            });
+        },
+        destroyUser: function (id) {
+            const check = confirm('Вы уверенны, что хотите удалить учетную записась данного пользователя?')
+            if (check)
+                this.deleteById(id)
         },
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
             this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
         },
-        deleteById: function (id) {
-            axios.get('http://yuri.shcherba.loc/admin/forms/requests/destroyRequest/' + id).then((response) => {
-                this.items = response.data
+        addNewUser: function () {
+            this.displayCreate = true
+        },
+        updateUser: function (id) {
+            this.displayUpdate = true
+            axios.get('http://yuri.shcherba.loc/admin/tables/users/getUser/' + id).then((response) => {
+                this.setUser = response.data
             });
         },
         deleteChecked: function () {
             if (this.destroylist.length) {
-                const check = confirm('Вы уверенны, что хотите удалить выбранные элементы?')
+                const check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?')
                 if (check){
                     this.destroylist.forEach(item => this.deleteById(item))
                 }
@@ -148,4 +157,3 @@ export default {
     color: white;
 }
 </style>
-
