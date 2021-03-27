@@ -39,7 +39,10 @@
                 </div>
                 <div class="form-group col-md-8">
                     <label>Адрес</label>
-                    <input v-model="location" id="location" class="form-control" name="location" required>
+                    <input class="form-control typeahead" id="location" autocomplete="off"  v-model="location"  @keyup="daDataSuggestions(location)" type="ADDRESS" name="location" required>
+                    <select class="form-control">
+                        <option v-for="suggestion in suggestions" :value="suggestion.value">{{suggestion.value}}</option>
+                    </select>
                 </div>
             </div>
             <div class="row">
@@ -68,7 +71,8 @@ export default {
             year: "",
             type: '',
             location: '',
-            comment: ''
+            comment: '',
+            suggestions: []
         }
     },
     mounted() {
@@ -103,7 +107,6 @@ export default {
                     'role_name': this.role_name,
                     'password': this.password
                 }
-                console.log(data)
                 let formData = new FormData();
                 for (let key in data) {
                     formData.append(key, data[key]);
@@ -115,6 +118,41 @@ export default {
         },
         refresh: function () {
             this.$emit('refresh')
+        },
+        daDataSuggestions: function (loc) {
+            let takeData = this.takeDaDataLocation(loc)
+            console.log(takeData)
+            const self = this
+            axios.post('http://yuri.shcherba.loc/admin/daData/prompt', takeData, {
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'content-type': 'application/form-data'
+                }
+            }).then(function (response) {
+                self.suggestions = response.data.suggestions
+                self.showSuggestion(self.suggestions.value)
+                // response.data.suggestions.forEach(item => self.showSuggestion(item.value))
+                // self.refresh(self.success)
+            }).catch(err =>
+                console.log(err));
+        },
+        takeDaDataLocation: function (loc) {
+            let data = {
+                'location': loc
+            }
+            let formData = new FormData();
+            for (let key in data) {
+                formData.append(key, data[key]);
+            }
+            return formData;
+        },
+        showSuggestion: function (suggestion) {
+            console.log(suggestion)
+            $("input.typeahead").tagsinput({
+                typeahead: {
+                    source: ["Amsterdam", "Washington", "Sydney", "Beijing", "Cairo"]
+                }
+            });
         }
     }
 }

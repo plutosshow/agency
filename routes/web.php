@@ -56,8 +56,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/tables/flats', 'App\Http\Controllers\FlatsController@admin')->name('admin.table.flats');
     Route::get('admin/tables/flats/destroyFlat/{id}', 'App\Http\Controllers\FlatsController@destroyFlat')->name('admin.flats.destroyFlat');
 
-
-
+    Route::post('admin/daData/prompt', 'App\Http\Controllers\DataController@prompt')->name('admin.daData.prompt');
 
 
 });

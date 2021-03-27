@@ -2578,6 +2578,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2589,7 +2592,8 @@ __webpack_require__.r(__webpack_exports__);
       year: "",
       type: '',
       location: '',
-      comment: ''
+      comment: '',
+      suggestions: []
     };
   },
   mounted: function mounted() {
@@ -2627,7 +2631,6 @@ __webpack_require__.r(__webpack_exports__);
           'role_name': this.role_name,
           'password': this.password
         };
-        console.log(data);
         var formData = new FormData();
 
         for (var key in data) {
@@ -2641,6 +2644,43 @@ __webpack_require__.r(__webpack_exports__);
     },
     refresh: function refresh() {
       this.$emit('refresh');
+    },
+    daDataSuggestions: function daDataSuggestions(loc) {
+      var takeData = this.takeDaDataLocation(loc);
+      console.log(takeData);
+      var self = this;
+      axios.post('http://yuri.shcherba.loc/admin/daData/prompt', takeData, {
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+          'content-type': 'application/form-data'
+        }
+      }).then(function (response) {
+        self.suggestions = response.data.suggestions;
+        self.showSuggestion(self.suggestions.value); // response.data.suggestions.forEach(item => self.showSuggestion(item.value))
+        // self.refresh(self.success)
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    takeDaDataLocation: function takeDaDataLocation(loc) {
+      var data = {
+        'location': loc
+      };
+      var formData = new FormData();
+
+      for (var key in data) {
+        formData.append(key, data[key]);
+      }
+
+      return formData;
+    },
+    showSuggestion: function showSuggestion(suggestion) {
+      console.log(suggestion);
+      $("input.typeahead").tagsinput({
+        typeahead: {
+          source: ["Amsterdam", "Washington", "Sydney", "Beijing", "Cairo"]
+        }
+      });
     }
   }
 });
@@ -42181,10 +42221,19 @@ var render = function() {
                   expression: "location"
                 }
               ],
-              staticClass: "form-control",
-              attrs: { id: "location", name: "location", required: "" },
+              staticClass: "form-control typeahead",
+              attrs: {
+                id: "location",
+                autocomplete: "off",
+                type: "ADDRESS",
+                name: "location",
+                required: ""
+              },
               domProps: { value: _vm.location },
               on: {
+                keyup: function($event) {
+                  return _vm.daDataSuggestions(_vm.location)
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -42192,7 +42241,18 @@ var render = function() {
                   _vm.location = $event.target.value
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            _c(
+              "select",
+              { staticClass: "form-control" },
+              _vm._l(_vm.suggestions, function(suggestion) {
+                return _c("option", { domProps: { value: suggestion.value } }, [
+                  _vm._v(_vm._s(suggestion.value))
+                ])
+              }),
+              0
+            )
           ])
         ]),
         _vm._v(" "),
