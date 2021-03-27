@@ -19,7 +19,6 @@ export default {
         'pageNumber',
     ],
     mounted() {
-        console.log('mounted pagination')
     },
     methods: {
         paginatedPage: function (n) {

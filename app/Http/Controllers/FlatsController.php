@@ -17,20 +17,7 @@ class FlatsController extends Controller
      */
     public function index()
     {
-        return  view('home', $this->showListFlats());
-    }
-
-    public function showListFlats(){
-        $flats = DB::table('flats')
-            ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
-            ->groupBy('img_flats.flat', 'flats.id')
-            ->distinct()
-            ->select('flats.*', 'img_flats.image')
-            ->get()->paginate(6);
-        return  [
-            'allFlats' => $flats,
-            'slides'  => $this->sliderFlats()
-        ];
+        return  view('home', $this->sliderFlats());
     }
 
     public function showAllFlats(){
@@ -39,6 +26,7 @@ class FlatsController extends Controller
             ->groupBy('img_flats.flat', 'flats.id')
             ->distinct()
             ->select('flats.*', 'img_flats.image')
+            ->where('relevant', '1')
             ->get();
         return  [
             'allFlats' => $flats,
@@ -52,7 +40,9 @@ class FlatsController extends Controller
             ->select('flats.*', 'img_flats.image')
             ->where('img_flats.show_on_main', '=', 1)
             ->get()->take('6');
-        return $slides;
+        return [
+            'slides' => $slides
+        ];
     }
 
     /**
@@ -65,6 +55,10 @@ class FlatsController extends Controller
         return view('createFlat');
     }
 
+    public function admin(){
+        return view('admin.tables.flats');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -73,22 +67,22 @@ class FlatsController extends Controller
      */
     public function storeFlats(Request $request)
     {
-        Flats::create([
-            'rooms'         => $request->get('rooms'),
-            'livedSquare'   => $request->get('livedSquare'),
-            'commonSquare'  => $request->get('commonSquare'),
-            'year'          => $request->get('year'),
-            'type'          => $request->get('type'),
-            'comments'      => $request->get('comments'),
-            'region'        => $request->get('region'),
-            'district'      => $request->get('district'),
-            'city'          => $request->get('city'),
-            'street'        => $request->get('street'),
-            'building'      => $request->get('building'),
-            'zip'           => $request->get('zip')
-        ]);
-
-        return redirect('/');
+//        Flats::create([
+//            'rooms'         => $request->get('rooms'),
+//            'livedSquare'   => $request->get('livedSquare'),
+//            'commonSquare'  => $request->get('commonSquare'),
+//            'year'          => $request->get('year'),
+//            'type'          => $request->get('type'),
+//            'comments'      => $request->get('comments'),
+//            'region'        => $request->get('region'),
+//            'district'      => $request->get('district'),
+//            'city'          => $request->get('city'),
+//            'street'        => $request->get('street'),
+//            'building'      => $request->get('building'),
+//            'zip'           => $request->get('zip')
+//        ]);
+//
+//        return redirect('/');
     }
 
     /**
@@ -100,13 +94,16 @@ class FlatsController extends Controller
     public function showFlat($id)
     {
         $flat = Flats::find($id);
-//        $flat = Flats::select('id', 'floor', 'type', 'city', 'price')->where('id', $id)->first();
+        $images = DB::table('img_flats')
+            ->where('img_flats.flat', '=', $id)
+            ->get();
         $price = number_format($flat['price'], 0, '', ' ');
         $priceSquare = round(($flat['price']/$flat['commonSquare']), 2);
         return view('property')->with([
-            'flat'  => $flat,
-            'price' => $price,
-            'priceSquare'  => $priceSquare
+            'flat'          => $flat,
+            'price'         => $price,
+            'priceSquare'   => $priceSquare,
+            'images'        => $images,
         ]);
     }
 
@@ -141,6 +138,8 @@ class FlatsController extends Controller
      */
     public function destroyFlat($id)
     {
-        //
+        DB::table('flats')->where('id', $id)->update([
+            'relevant'  => '0'
+        ]);
     }
 }

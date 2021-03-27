@@ -93,7 +93,6 @@
             }
         },
         mounted() {
-            console.log( this.items)
         },
         methods: {
             filterChanges () {
