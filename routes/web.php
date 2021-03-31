@@ -56,9 +56,14 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('admin/tables/users/createUser', 'App\Http\Controllers\Admin\TableUserController@createUser')->name('table.users.createUser');
     //Roles
     Route::get('admin/tables/roles/getAllRoles', 'App\Http\Controllers\Admin\RolesController@getAllRoles')->name('table.roles.getAllRoles');
+    Route::get('admin/tables/roles', 'App\Http\Controllers\Admin\RolesController@index')->name('admin.tables.roles');
+    Route::get('admin/tables/roles/destroyRole/{id}', 'App\Http\Controllers\Admin\RolesController@destroyRole')->name('table.roles.destroyRole');
+    Route::get('admin/tables/roles/getRole/{id}', 'App\Http\Controllers\Admin\RolesController@getRole')->name('table.roles.getRole');
+    Route::post('admin/tables/roles/createRole', 'App\Http\Controllers\Admin\RolesController@createRole')->name('table.roles.createRole');
+    Route::post('admin/tables/roles/updateRole', 'App\Http\Controllers\Admin\RolesController@updateRole')->name('table.roles.updateRole');
+
     //Flats
     Route::get('admin/tables/flats', 'App\Http\Controllers\FlatsController@admin')->name('admin.table.flats');
-    Route::get('admin/tables/flats/showAllFlats', 'App\Http\Controllers\FlatsController@destroyFlat')->name('admin.flats.showAll');
     Route::get('admin/tables/flats/destroyFlat/{id}', 'App\Http\Controllers\FlatsController@destroyFlat')->name('admin.flats.destroyFlat');
 
 

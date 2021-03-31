@@ -28,18 +28,26 @@ require('./mask');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('show-flats-component', require('./components/ShowFlatsComponent').default);
-Vue.component('pagination-component', require('./components/PaginationComponent').default);
-Vue.component('filter-component', require('./components/FilterComponent').default);
-Vue.component('form-request', require('./components/admin/FormRequest').default);
-Vue.component('detail-request', require('./components/admin/DetailRequestComponent').default);
-Vue.component('create-request', require('./components/admin/CreateRequestComponent').default);
-Vue.component('table-users-component', require('./components/admin/tables/TableUsersComponent').default);
-Vue.component('update-users-component', require('./components/admin/tables/UpdateUsersComponent').default);
-Vue.component('create-users-component', require('./components/admin/tables/CreateUsersComponent').default);
-Vue.component('table-flats-component', require('./components/admin/tables/TableFlatsComponent').default);
-Vue.component('update-flats-component', require('./components/admin/tables/UpdateFlatsComponent').default);
-Vue.component('create-flats-component', require('./components/admin/tables/CreateFlatsComponent').default);
+//Main
+Vue.component('show-flats-component', require('./components/main/ShowFlatsComponent').default);
+Vue.component('pagination-component', require('./components/main/PaginationComponent').default);
+Vue.component('filter-component', require('./components/main/FilterComponent').default);
+//Form.requests
+Vue.component('form-request', require('./components/admin/forms/requests/FormRequest').default);
+Vue.component('detail-request', require('./components/admin/forms/requests/DetailRequestComponent').default);
+Vue.component('create-request', require('./components/admin/forms/requests/CreateRequestComponent').default);
+//Users
+Vue.component('table-users-component', require('./components/admin/tables/users/TableUsersComponent').default);
+Vue.component('update-users-component', require('./components/admin/tables/users/UpdateUsersComponent').default);
+Vue.component('create-users-component', require('./components/admin/tables/users/CreateUsersComponent').default);
+//Flats
+Vue.component('table-flats-component', require('./components/admin/tables/flats/TableFlatsComponent').default);
+Vue.component('update-flats-component', require('./components/admin/tables/flats/UpdateFlatsComponent').default);
+Vue.component('create-flats-component', require('./components/admin/tables/flats/CreateFlatsComponent').default);
+//Roles
+Vue.component('table-roles-component', require('./components/admin/tables/roles/TableRolesComponent').default);
+Vue.component('update-roles-component', require('./components/admin/tables/roles/UpdateRoleComponent').default);
+Vue.component('create-roles-component', require('./components/admin/tables/roles/CreateRoleComponent').default);
 
 
 
