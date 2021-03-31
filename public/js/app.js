@@ -1937,7 +1937,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.gelUniqueCities();
+    this.getUniqueCities();
   },
   methods: {
     filterChanges: function filterChanges() {
@@ -1953,7 +1953,7 @@ __webpack_require__.r(__webpack_exports__);
       this.price_min = '';
       this.$emit('submitChanges');
     },
-    gelUniqueCities: function gelUniqueCities() {
+    getUniqueCities: function getUniqueCities() {
       var _this = this;
 
       axios.get('http://yuri.shcherba.loc/get/uniqueCities').then(function (response) {
