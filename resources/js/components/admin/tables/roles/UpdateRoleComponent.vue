@@ -8,7 +8,7 @@
                 </div>
                 <div class="form-group col-md-6 col-sm-12">
                     <label>Имя защитника</label>
-                    <input   type="text" v-model="item.guard_name" name="role" class="form-control" required>
+                    <input type="text" v-model="item.guard_name" name="role" class="form-control" required>
                 </div>
             </div>
             <div class="row">

@@ -1,6 +1,6 @@
 <template>
     <div class="card-body table-responsive-xl">
-        <div v-if="!displayUpdate && !displayCreate">
+        <div v-if="!displayUpdate && !displayCreate && !displayList">
             <div class="row">
                 <div class="col-md-11">
                     <button @click="addNew" class="btn btn-primary">Добавить новую роль</button>
@@ -35,6 +35,9 @@
                     <td>
                         <button @click="update(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
                         </button>
+                        <button @click="showList(item.name)" type="button" class="btn btn-sm btn-info"><i
+                            class="fas fa-clipboard-list"></i>
+                        </button>
                         <button @click="destroy(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
                         </button>
                     </td>
@@ -57,6 +60,19 @@
                 @refresh="refresh"
             ></create-roles-component>
         </div>
+        <div v-if="displayList">
+            <div class="row">
+                <div class="col-md-2">
+                    <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <hr>
+
+            <list-roles-component
+                @refresh="refresh"
+                :listBy="listBy"
+            ></list-roles-component>
+        </div>
     </div>
 </template>
 
@@ -68,9 +84,11 @@ export default {
             displayUpdate: false,
             displayCreate: false,
             checkAll: false,
+            displayList: false,
             checkedNames: [],
             checkedList: [],
-            setRole: []
+            setRole: [],
+            listBy: '',
         }
     },
     mounted() {
@@ -82,6 +100,10 @@ export default {
                 this.items = response.data
             });
         },
+        showList: function (role_name) {
+            this.listBy = role_name
+            this.displayList = true
+        },
         format: function (price) {
             if (price) {
                 let priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)))
@@ -92,6 +114,7 @@ export default {
         refresh: function () {
             this.displayUpdate = false
             this.displayCreate = false
+            this.displayList = false
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []

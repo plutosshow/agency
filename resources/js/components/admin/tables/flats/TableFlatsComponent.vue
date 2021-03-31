@@ -3,7 +3,7 @@
         <div v-if="!displayUpdate && !displayCreate">
             <div class="row">
                 <div class="col-md-11">
-                    <button @click="addNewFlat" class="btn btn-primary">Добавить новый объект</button>
+                    <button @click="addNew" class="btn btn-primary">Добавить новый объект</button>
                     <button @click="deleteChecked" class="btn btn-danger">Удалить отмеченные</button>
 
                 </div>
@@ -43,9 +43,9 @@
                     <td>{{ item.commonSquare }}</td>
                     <td>{{ format(item.price) }}</td>
                     <td>
-                        <button @click="updateUser(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
+                        <button @click="update(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
                         </button>
-                        <button @click="destroyFlat(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
+                        <button @click="destroy(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
                         </button>
                     </td>
                 </tr>
@@ -80,7 +80,7 @@ export default {
             checkAll: false,
             checkedNames: [],
             checkedList: [],
-            setUser: []
+            setFlat: []
         }
     },
     mounted() {
@@ -88,7 +88,7 @@ export default {
     },
     methods: {
         showAllFlats: function () {
-            axios.get('http://yuri.shcherba.loc/get/showAllFlats').then((response) => {
+            axios.get('http://yuri.shcherba.loc/admin/tables/flats/showFlats').then((response) => {
                 this.items = response.data
                 this.items = this.items.allFlats
             });
@@ -114,7 +114,7 @@ export default {
                 this.items = this.items.allFlats
             });
         },
-        destroyFlat: function (id) {
+        destroy: function (id) {
             const check = confirm('Вы уверенны, что хотите дать этому объекту статус не активен?')
             if (check) {
                 this.deleteById(id)
@@ -123,18 +123,18 @@ export default {
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
         },
-        addNewFlat: function () {
+        addNew: function () {
             this.displayCreate = true
         },
-        updateUser: function (id) {
+        update: function (id) {
             this.displayUpdate = true
-            axios.get('http://yuri.shcherba.loc/admin/tables/users/getUser/' + id).then((response) => {
+            axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlat/' + id).then((response) => {
                 this.setFlat = response.data
             });
         },
         deleteChecked: function () {
             if (this.checkedNames.length) {
-                const check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?')
+                const check = confirm('Вы уверенны, что хотите сделать неактивными выбранные объекты?')
                 if (check) {
                     this.checkedNames.forEach(item => this.deleteById(item))
                 }

@@ -48,6 +48,8 @@ Vue.component('create-flats-component', require('./components/admin/tables/flats
 Vue.component('table-roles-component', require('./components/admin/tables/roles/TableRolesComponent').default);
 Vue.component('update-roles-component', require('./components/admin/tables/roles/UpdateRoleComponent').default);
 Vue.component('create-roles-component', require('./components/admin/tables/roles/CreateRoleComponent').default);
+Vue.component('list-roles-component', require('./components/admin/tables/roles/ListRolesCompinent').default);
+
 
 
 

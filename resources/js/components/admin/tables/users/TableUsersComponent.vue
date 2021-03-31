@@ -78,7 +78,6 @@ export default {
             checkAll: false,
             checkedNames: [],
             checkedList: [],
-            destroylist: [],
             setUser: []
         }
     },
@@ -97,7 +96,6 @@ export default {
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
-            this.destroylist = []
             this.showAllUsers()
         },
         deleteById: function (id) {

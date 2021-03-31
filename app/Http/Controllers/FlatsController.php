@@ -33,6 +33,16 @@ class FlatsController extends Controller
         ];
     }
 
+    public function showFlats(){
+        $flats = DB::table('flats')
+            ->select('*')
+            ->where('relevant', '1')
+            ->get();
+        return  [
+            'allFlats' => $flats,
+        ];
+    }
+
     public function sliderFlats()
     {
         $slides = DB::table('flats')
@@ -50,39 +60,34 @@ class FlatsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createFlat()
+    public function createFlat(Request $request)
     {
-        return view('createFlat');
+        Flats::create([
+            'rooms'         => $request->get('rooms'),
+            'floor'         => $request->get('floor'),
+            'price'         => $request->get('price'),
+            'livedSquare'   => $request->get('livedSquare'),
+            'commonSquare'  => $request->get('commonSquare'),
+            'year'          => $request->get('year'),
+            'type'          => $request->get('type'),
+            'comments'      => $request->get('comments'),
+            'region'        => $request->get('region'),
+            'district'      => $request->get('district'),
+            'city'          => $request->get('city'),
+            'street'        => $request->get('street'),
+            'building'      => $request->get('building'),
+            'zip'           => $request->get('zip')
+        ]);
+
+        return $this->showAllFlats();
     }
 
     public function admin(){
         return view('admin.tables.flats');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function storeFlats(Request $request)
-    {
-//        Flats::create([
-//            'rooms'         => $request->get('rooms'),
-//            'livedSquare'   => $request->get('livedSquare'),
-//            'commonSquare'  => $request->get('commonSquare'),
-//            'year'          => $request->get('year'),
-//            'type'          => $request->get('type'),
-//            'comments'      => $request->get('comments'),
-//            'region'        => $request->get('region'),
-//            'district'      => $request->get('district'),
-//            'city'          => $request->get('city'),
-//            'street'        => $request->get('street'),
-//            'building'      => $request->get('building'),
-//            'zip'           => $request->get('zip')
-//        ]);
-//
-//        return redirect('/');
+    public function getFlat($id){
+        return Flats::find($id);
     }
 
     /**
@@ -93,7 +98,7 @@ class FlatsController extends Controller
      */
     public function showFlat($id)
     {
-        $flat = Flats::find($id);
+        $flat = $this->getFlat($id);
         $images = DB::table('img_flats')
             ->where('img_flats.flat', '=', $id)
             ->get();
@@ -106,18 +111,6 @@ class FlatsController extends Controller
             'images'        => $images,
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function editFlat($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -125,9 +118,24 @@ class FlatsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateFlat(Request $request, $id)
+    public function updateFlat(Request $request)
     {
-        //
+        DB::table('flats')->where('id', $request->get('id'))->update([
+            'rooms'         => $request->get('rooms'),
+            'floor'         => $request->get('floor'),
+            'price'         => $request->get('price'),
+            'livedSquare'   => $request->get('livedSquare'),
+            'commonSquare'  => $request->get('commonSquare'),
+            'year'          => $request->get('year'),
+            'type'          => $request->get('type'),
+            'comments'      => $request->get('comments'),
+            'region'        => $request->get('region'),
+            'district'      => $request->get('district'),
+            'city'          => $request->get('city'),
+            'street'        => $request->get('street'),
+            'building'      => $request->get('building'),
+            'zip'           => $request->get('zip')
+        ]);
     }
 
     /**
@@ -143,5 +151,9 @@ class FlatsController extends Controller
         ]);
 
         return $this->showAllFlats();
+    }
+
+    public function uploadImages(Request $request){
+        dd($request->file('files'));
     }
 }
