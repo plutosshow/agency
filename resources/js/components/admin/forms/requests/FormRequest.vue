@@ -70,7 +70,6 @@ export default {
             checkedNames: [],
             checkedList: [],
             checkAll: false,
-            destroylist: [],
         }
     },
     mounted() {
@@ -107,7 +106,6 @@ export default {
         },
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
-            this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
         },
         deleteById: function (id) {
             axios.get('http://yuri.shcherba.loc/admin/forms/requests/destroyRequest/' + id).then((response) => {
@@ -115,10 +113,10 @@ export default {
             });
         },
         deleteChecked: function () {
-            if (this.destroylist.length) {
-                const check = confirm('Вы уверенны, что хотите удалить выбранные элементы?')
+            if (this.checkedNames.length) {
+                const check = confirm('Вы уверенны, что хотите отметить данные заявки как выполненные?')
                 if (check){
-                    this.destroylist.forEach(item => this.deleteById(item))
+                    this.checkedNames.forEach(item => this.deleteById(item))
                 }
                 this.refresh()
             } else {
@@ -135,7 +133,8 @@ export default {
             else
                 this.checkedNames = []
             for(let k = 0; k < all.length; k++){
-                this.checked(all[k], k)
+                if (this.checkedList[k] != true || this.checkedNames.length == 0)
+                    this.checked(all[k], k)
             }
         }
     }
