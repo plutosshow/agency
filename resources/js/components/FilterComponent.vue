@@ -94,7 +94,7 @@
             }
         },
         mounted() {
-            this.gelUniqueCities()
+            this.getUniqueCities()
         },
         methods: {
             filterChanges () {
@@ -111,7 +111,7 @@
                 this.price_min = ''
                 this.$emit('submitChanges')
             },
-            gelUniqueCities: function () {
+            getUniqueCities: function () {
                 axios.get('http://yuri.shcherba.loc/get/uniqueCities').then((response) => {
                     this.cities = response.data
                 });
