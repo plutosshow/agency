@@ -141,5 +141,7 @@ class FlatsController extends Controller
         DB::table('flats')->where('id', $id)->update([
             'relevant'  => '0'
         ]);
+
+        return $this->showAllFlats();
     }
 }

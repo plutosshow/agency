@@ -112,7 +112,6 @@ export default {
         },
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
-            this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
         },
         addNewUser: function () {
             this.displayCreate = true
@@ -124,10 +123,10 @@ export default {
             });
         },
         deleteChecked: function () {
-            if (this.destroylist.length) {
+            if (this.checkedNames.length) {
                 const check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?')
                 if (check){
-                    this.destroylist.forEach(item => this.deleteById(item))
+                    this.checkedNames.forEach(item => this.deleteById(item))
                 }
                 this.refresh()
             } else {
@@ -144,7 +143,8 @@ export default {
             else
                 this.checkedNames = []
             for(let k = 0; k < all.length; k++){
-                this.checked(all[k], k)
+                if (this.checkedList[k] != true || this.checkedNames.length == 0)
+                    this.checked(all[k], k)
             }
         }
     }

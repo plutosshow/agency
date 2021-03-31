@@ -12,6 +12,7 @@ class FilterController extends Controller
     {
         $cities = DB::table('flats')
             ->select('flats.city')
+            ->where('relevant', '=', '1')
             ->distinct()
             ->orderBy('flats.city')
             ->get();

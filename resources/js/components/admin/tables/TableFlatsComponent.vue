@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-11">
                     <button @click="addNewFlat" class="btn btn-primary">Добавить новый объект</button>
-                    <button @click="deleteChecked" class="btn btn-danger" >Удалить отмеченные</button>
+                    <button @click="deleteChecked" class="btn btn-danger">Удалить отмеченные</button>
 
                 </div>
                 <div class="col-md-1">
@@ -71,9 +71,7 @@
 </template>
 
 <script>
-import CreateUsersComponent from "./CreateUsersComponent";
 export default {
-    components: {CreateUsersComponent},
     data: function () {
         return {
             items: [],
@@ -82,7 +80,6 @@ export default {
             checkAll: false,
             checkedNames: [],
             checkedList: [],
-            destroylist: [],
             setUser: []
         }
     },
@@ -109,23 +106,22 @@ export default {
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
-            this.destroylist = []
             this.showAllFlats()
         },
         deleteById: function (id) {
             axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then((response) => {
                 this.items = response.data
+                this.items = this.items.allFlats
             });
         },
         destroyFlat: function (id) {
             const check = confirm('Вы уверенны, что хотите дать этому объекту статус не активен?')
-            if (check)
+            if (check) {
                 this.deleteById(id)
-            this.refresh()
+            }
         },
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
-            this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
         },
         addNewFlat: function () {
             this.displayCreate = true
@@ -137,27 +133,28 @@ export default {
             });
         },
         deleteChecked: function () {
-            if (this.destroylist.length) {
+            if (this.checkedNames.length) {
                 const check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?')
-                if (check){
-                    this.destroylist.forEach(item => this.deleteById(item))
+                if (check) {
+                    this.checkedNames.forEach(item => this.deleteById(item))
                 }
                 this.refresh()
             } else {
                 alert('Не выбрано, не 1 элемента')
             }
         },
-        checkedAll: function (){
+        checkedAll: function () {
             let all = []
-            this.items.forEach(function (item, index){
+            this.items.forEach(function (item, index) {
                 all[index] = item.id
             })
-            if(this.checkAll)
+            if (this.checkAll)
                 this.checkedNames = all
             else
                 this.checkedNames = []
-            for(let k = 0; k < all.length; k++){
-                this.checked(all[k], k)
+            for (let k = 0; k < all.length; k++) {
+                if (this.checkedList[k] != true || this.checkedNames.length == 0)
+                    this.checked(all[k], k)
             }
         }
     }

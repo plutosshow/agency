@@ -58,6 +58,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/tables/roles/getAllRoles', 'App\Http\Controllers\Admin\RolesController@getAllRoles')->name('table.roles.getAllRoles');
     //Flats
     Route::get('admin/tables/flats', 'App\Http\Controllers\FlatsController@admin')->name('admin.table.flats');
+    Route::get('admin/tables/flats/showAllFlats', 'App\Http\Controllers\FlatsController@destroyFlat')->name('admin.flats.showAll');
     Route::get('admin/tables/flats/destroyFlat/{id}', 'App\Http\Controllers\FlatsController@destroyFlat')->name('admin.flats.destroyFlat');
 
 
