@@ -2109,7 +2109,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('http://yuri.shcherba.loc/get/showAllFlats').then(function (response) {
         _this.json = response.data;
         _this.items = _this.json.allFlats;
-        console.log(_this.items.length);
       });
     },
     submitChanges: function submitChanges() {
@@ -2794,7 +2793,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CreateUsersComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateUsersComponent */ "./resources/js/components/admin/tables/CreateUsersComponent.vue");
 //
 //
 //
@@ -2867,11 +2865,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    CreateUsersComponent: _CreateUsersComponent__WEBPACK_IMPORTED_MODULE_0__.default
-  },
   data: function data() {
     return {
       items: [],
@@ -2880,7 +2874,6 @@ __webpack_require__.r(__webpack_exports__);
       checkAll: false,
       checkedNames: [],
       checkedList: [],
-      destroylist: [],
       setUser: []
     };
   },
@@ -2909,7 +2902,6 @@ __webpack_require__.r(__webpack_exports__);
       this.checkAll = false;
       this.checkedNames = [];
       this.checkedList = [];
-      this.destroylist = [];
       this.showAllFlats();
     },
     deleteById: function deleteById(id) {
@@ -2917,16 +2909,18 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then(function (response) {
         _this2.items = response.data;
+        _this2.items = _this2.items.allFlats;
       });
     },
     destroyFlat: function destroyFlat(id) {
       var check = confirm('Вы уверенны, что хотите дать этому объекту статус не активен?');
-      if (check) this.deleteById(id);
-      this.refresh();
+
+      if (check) {
+        this.deleteById(id);
+      }
     },
     checked: function checked(id, index) {
       this.checkedList[index] = !this.checkedList[index];
-      this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
     },
     addNewFlat: function addNewFlat() {
       this.displayCreate = true;
@@ -2942,11 +2936,11 @@ __webpack_require__.r(__webpack_exports__);
     deleteChecked: function deleteChecked() {
       var _this4 = this;
 
-      if (this.destroylist.length) {
+      if (this.checkedNames.length) {
         var check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?');
 
         if (check) {
-          this.destroylist.forEach(function (item) {
+          this.checkedNames.forEach(function (item) {
             return _this4.deleteById(item);
           });
         }
@@ -2964,7 +2958,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.checkAll) this.checkedNames = all;else this.checkedNames = [];
 
       for (var k = 0; k < all.length; k++) {
-        this.checked(all[k], k);
+        if (this.checkedList[k] != true || this.checkedNames.length == 0) this.checked(all[k], k);
       }
     }
   }
@@ -3102,7 +3096,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     checked: function checked(id, index) {
       this.checkedList[index] = !this.checkedList[index];
-      this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
     },
     addNewUser: function addNewUser() {
       this.displayCreate = true;
@@ -3118,11 +3111,11 @@ __webpack_require__.r(__webpack_exports__);
     deleteChecked: function deleteChecked() {
       var _this4 = this;
 
-      if (this.destroylist.length) {
+      if (this.checkedNames.length) {
         var check = confirm('Вы уверенны, что хотите удалить выбранные учетные записи?');
 
         if (check) {
-          this.destroylist.forEach(function (item) {
+          this.checkedNames.forEach(function (item) {
             return _this4.deleteById(item);
           });
         }
@@ -3140,7 +3133,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.checkAll) this.checkedNames = all;else this.checkedNames = [];
 
       for (var k = 0; k < all.length; k++) {
-        this.checked(all[k], k);
+        if (this.checkedList[k] != true || this.checkedNames.length == 0) this.checked(all[k], k);
       }
     }
   }

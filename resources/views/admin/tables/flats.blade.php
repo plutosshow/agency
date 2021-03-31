@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title')Запросы на звонок | {{ config('app.name') }} @endsection
+@section('title')Таблица "Квартиры" | {{ config('app.name') }} @endsection
 @section('content')
     @include('templates.header')
     @include('templates.admin.templates.side-bar', ['activeParent' => 'tables', 'active'=>'flats'])
