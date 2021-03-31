@@ -69,6 +69,12 @@
                                 <p>{{_('Квартиры')}}</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.tables.roles')}}" class="nav-link {{(($active ?? '') == 'roles') ? "active" : "" ?? ''}}">
+                                <i class="far fa-id-card"></i>
+                                <p>{{_('Роли')}}</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">

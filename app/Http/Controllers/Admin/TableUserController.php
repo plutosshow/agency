@@ -71,4 +71,13 @@ class TableUserController extends Controller
         $user->assignRole($name);
         return $user;
     }
+
+    public function usersWithRole($role)
+    {
+        return DB::table('users')->select('users.id', 'users.surname', 'users.name', 'users.patronymic', 'users.email',
+            'roles.name as role_name')
+            ->leftJoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'roles.id', '=',  'model_has_roles.role_id')
+            ->where('roles.name', $role)->get();
+    }
 }

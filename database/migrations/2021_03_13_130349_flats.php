@@ -29,7 +29,7 @@ class Flats extends Migration
             $table->string('street');
             $table->string('building');
             $table->string('zip');
-            $table->boolean('relevant');
+            $table->boolean('relevant')->default('1');
             $table->timestamps();
         });
     }

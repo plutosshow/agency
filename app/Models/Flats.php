@@ -19,6 +19,8 @@ class Flats extends Model
         'city',
         'street',
         'building',
-        'zip'
+        'zip',
+        'price',
+        'floor'
     ];
 }
