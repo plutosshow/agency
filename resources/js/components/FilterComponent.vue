@@ -17,7 +17,7 @@
                         <span class="icon icon-arrow_drop_down"></span>
                         <select @change="filterChanges" v-model="location" name="location" id="location" class="select-clear form-control d-block rounded-0">
                             <option disabled selected value="">Город</option>
-                            <option v-for="item in items">{{item.city}}</option>
+                            <option v-for="item in cities">{{item.city}}</option>
                         </select>
                     </div>
                 </div>
@@ -90,9 +90,11 @@
                 price_max: "",
                 livedSquare: "",
                 commonSquare: "",
+                cities: []
             }
         },
         mounted() {
+            this.gelUniqueCities()
         },
         methods: {
             filterChanges () {
@@ -108,6 +110,11 @@
                 this.price_max = ''
                 this.price_min = ''
                 this.$emit('submitChanges')
+            },
+            gelUniqueCities: function () {
+                axios.get('http://yuri.shcherba.loc/get/uniqueCities').then((response) => {
+                    this.cities = response.data
+                });
             }
         }
     }

@@ -15,11 +15,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="/admin/dist/js/adminlte.js"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <script type="text/javascript">
-        $.fias.token = 'Zrt785D7sGRQANHa9hfBGABRNKNZiEbR';
-        $.fias.url = 'https://kladr-api.com/api.php';
-    </script>
-
 
 </head>
 <body class="hold-transition sidebar-mini">

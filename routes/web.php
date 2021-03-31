@@ -22,9 +22,13 @@ Route::get('/about', function () {
 /*
  *Запросы к базе данных
 */
-Route::get('/property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');
-Route::post('form/request', 'App\Http\Controllers\Forms\RequestController@submit')->name('form.request');
+//Flats
 Route::get('get/showAllFlats', 'App\Http\Controllers\FlatsController@showAllFlats')->name('show.allFlats');
+Route::get('/property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');
+//Form.request
+Route::post('form/request', 'App\Http\Controllers\Forms\RequestController@submit')->name('form.request');
+//Filter
+Route::get('get/uniqueCities', 'App\Http\Controllers\Forms\FilterController@uniqueCities')->name('uniqueCities');
 
 /*
  * Admin routes

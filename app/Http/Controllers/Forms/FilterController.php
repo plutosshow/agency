@@ -8,15 +8,14 @@ use Request;
 
 class FilterController extends Controller
 {
-    public function test()
+    public function uniqueCities()
     {
-        $flats = DB::table('flats')
-            ->join('img_flats', 'img_flats.flat', '=', 'flats.id')
-            ->groupBy('img_flats.flat', 'flats.id')
+        $cities = DB::table('flats')
+            ->select('flats.city')
             ->distinct()
-            ->select('flats.*', 'img_flats.image')
+            ->orderBy('flats.city')
             ->get();
 
-        return $flats;
+        return $cities ?? NULL;
     }
 }

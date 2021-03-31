@@ -1932,10 +1932,13 @@ __webpack_require__.r(__webpack_exports__);
       price_min: "",
       price_max: "",
       livedSquare: "",
-      commonSquare: ""
+      commonSquare: "",
+      cities: []
     };
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.gelUniqueCities();
+  },
   methods: {
     filterChanges: function filterChanges() {
       this.$emit('filterChanges', this.livedSquare, this.commonSquare, this.location, this.rooms, this.price_min, this.price_max);
@@ -1949,6 +1952,13 @@ __webpack_require__.r(__webpack_exports__);
       this.price_max = '';
       this.price_min = '';
       this.$emit('submitChanges');
+    },
+    gelUniqueCities: function gelUniqueCities() {
+      var _this = this;
+
+      axios.get('http://yuri.shcherba.loc/get/uniqueCities').then(function (response) {
+        _this.cities = response.data;
+      });
     }
   }
 });
@@ -40947,7 +40957,7 @@ var render = function() {
                       [_vm._v("Город")]
                     ),
                     _vm._v(" "),
-                    _vm._l(_vm.items, function(item) {
+                    _vm._l(_vm.cities, function(item) {
                       return _c("option", [_vm._v(_vm._s(item.city))])
                     })
                   ],
