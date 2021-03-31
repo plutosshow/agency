@@ -80,7 +80,7 @@
                 <div class="form-group col-md-12">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="inputFile" ref="files" multiple
-                               v-on:change="handleFilesUpload()">
+                               @change="handleFilesUpload">
                         <label class="custom-file-label" for="inputFile">Выбирите изображения</label>
                         <div class="custom-file-label" v-for="file in files">
                             <div v-if="files.length==1">
@@ -95,8 +95,12 @@
             </div>
             <div class="row">
                 <div v-for="(file, key) in files" class="form-group col-md-1">
-                    <button class="btn btn-remove" @click="removeFile(parseInt( key ))">&#10008;</button>
-                    <img class="preview" v-bind:ref="'image'+parseInt( key )"/>
+                    <img class="preview" v-bind:ref="'image'+parseInt( key )">
+                        <button class="btn btn-remove" @click="removeFile(parseInt( key ))">&#10008;</button>
+                    </img>
+                </div>
+                <div class="form-group col-md-12 text-center" v-if="files.length">
+                    <button class="btn btn-danger form-control" @click="removeAllFiles">Удалить все изображения</button>
                 </div>
             </div>
             <div class="row">
@@ -212,7 +216,6 @@ export default {
             this.getImagePreviews()
         },
         removeFile(key) {
-            console.log(key)
             this.files.splice(key, 1)
             this.getImagePreviews()
         },
@@ -228,7 +231,12 @@ export default {
                     reader.readAsDataURL(this.files[i]);
                 }
             }
-        }
+        },
+        removeAllFiles: function() {
+            console.log(this.files.length)
+            this.files = []
+            this.getImagePreviews()
+        },
     },
     components: {
         TheMask
@@ -238,14 +246,16 @@ export default {
 
 <style scoped>
 .preview {
-    width: 60px;
-    height: 60px;
+    position: relative;
+    width: 100%;
+    -webkit-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
 }
-
 .btn-remove {
     position: absolute;
     top: -10px;
-    right: -14px;
+    right: 2%;
     color: red;
     font-size: 15px;
     z-index: 2;

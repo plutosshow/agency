@@ -2293,6 +2293,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2400,7 +2404,6 @@ __webpack_require__.r(__webpack_exports__);
       this.getImagePreviews();
     },
     removeFile: function removeFile(key) {
-      console.log(key);
       this.files.splice(key, 1);
       this.getImagePreviews();
     },
@@ -2420,6 +2423,11 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.files.length; i++) {
         _loop(i);
       }
+    },
+    removeAllFiles: function removeAllFiles() {
+      console.log(this.files.length);
+      this.files = [];
+      this.getImagePreviews();
     }
   },
   components: {
@@ -9036,7 +9044,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.preview[data-v-5646c6c3] {\n    width: 60px;\n    height: 60px;\n}\n.btn-remove[data-v-5646c6c3] {\n    position: absolute;\n    top: -10px;\n    right: -14px;\n    color: red;\n    font-size: 15px;\n    z-index: 2;\n}\n.btn-remove[data-v-5646c6c3]:hover {\n    color: DarkRed;\n    z-index: 2;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.preview[data-v-5646c6c3] {\n    position: relative;\n    width: 100%;\n    box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);\n}\n.btn-remove[data-v-5646c6c3] {\n    position: absolute;\n    top: -10px;\n    right: 2%;\n    color: red;\n    font-size: 15px;\n    z-index: 2;\n}\n.btn-remove[data-v-5646c6c3]:hover {\n    color: DarkRed;\n    z-index: 2;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42905,11 +42913,7 @@ var render = function() {
                   ref: "files",
                   staticClass: "custom-file-input",
                   attrs: { type: "file", id: "inputFile", multiple: "" },
-                  on: {
-                    change: function($event) {
-                      return _vm.handleFilesUpload()
-                    }
-                  }
+                  on: { change: _vm.handleFilesUpload }
                 }),
                 _vm._v(" "),
                 _c(
@@ -42953,29 +42957,44 @@ var render = function() {
         _c(
           "div",
           { staticClass: "row" },
-          _vm._l(_vm.files, function(file, key) {
-            return _c("div", { staticClass: "form-group col-md-1" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-remove",
-                  on: {
-                    click: function($event) {
-                      _vm.removeFile(parseInt(key))
+          [
+            _vm._l(_vm.files, function(file, key) {
+              return _c("div", { staticClass: "form-group col-md-1" }, [
+                _c("img", {
+                  ref: "image" + parseInt(key),
+                  refInFor: true,
+                  staticClass: "preview"
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-remove",
+                    on: {
+                      click: function($event) {
+                        _vm.removeFile(parseInt(key))
+                      }
                     }
-                  }
-                },
-                [_vm._v("✘")]
-              ),
-              _vm._v(" "),
-              _c("img", {
-                ref: "image" + parseInt(key),
-                refInFor: true,
-                staticClass: "preview"
-              })
-            ])
-          }),
-          0
+                  },
+                  [_vm._v("✘")]
+                )
+              ])
+            }),
+            _vm._v(" "),
+            _vm.files.length
+              ? _c("div", { staticClass: "form-group col-md-12 text-center" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger form-control",
+                      on: { click: _vm.removeAllFiles }
+                    },
+                    [_vm._v("Удалить все изображения")]
+                  )
+                ])
+              : _vm._e()
+          ],
+          2
         ),
         _vm._v(" "),
         _vm._m(0)
