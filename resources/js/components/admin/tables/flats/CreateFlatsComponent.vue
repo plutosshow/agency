@@ -233,7 +233,6 @@ export default {
             }
         },
         removeAllFiles: function() {
-            console.log(this.files.length)
             this.files = []
             this.getImagePreviews()
         },
@@ -248,6 +247,7 @@ export default {
 .preview {
     position: relative;
     width: 100%;
+    border-radius: 2px;
     -webkit-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
     box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);

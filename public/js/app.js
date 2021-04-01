@@ -2088,8 +2088,7 @@ __webpack_require__.r(__webpack_exports__);
       createDisplay: false,
       checkedNames: [],
       checkedList: [],
-      checkAll: false,
-      destroylist: []
+      checkAll: false
     };
   },
   mounted: function mounted() {
@@ -2129,7 +2128,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     checked: function checked(id, index) {
       this.checkedList[index] = !this.checkedList[index];
-      this.destroylist[index] = this.checkedList[index] ? id : this.destroylist.slice(index, 1);
     },
     deleteById: function deleteById(id) {
       var _this3 = this;
@@ -2141,11 +2139,11 @@ __webpack_require__.r(__webpack_exports__);
     deleteChecked: function deleteChecked() {
       var _this4 = this;
 
-      if (this.destroylist.length) {
-        var check = confirm('Вы уверенны, что хотите удалить выбранные элементы?');
+      if (this.checkedNames.length) {
+        var check = confirm('Вы уверенны, что хотите отметить данные заявки как выполненные?');
 
         if (check) {
-          this.destroylist.forEach(function (item) {
+          this.checkedNames.forEach(function (item) {
             return _this4.deleteById(item);
           });
         }
@@ -2163,7 +2161,7 @@ __webpack_require__.r(__webpack_exports__);
       if (this.checkAll) this.checkedNames = all;else this.checkedNames = [];
 
       for (var k = 0; k < all.length; k++) {
-        this.checked(all[k], k);
+        if (this.checkedList[k] != true || this.checkedNames.length == 0) this.checked(all[k], k);
       }
     }
   }
@@ -2425,7 +2423,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     removeAllFiles: function removeAllFiles() {
-      console.log(this.files.length);
       this.files = [];
       this.getImagePreviews();
     }
@@ -9044,7 +9041,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.preview[data-v-5646c6c3] {\n    position: relative;\n    width: 100%;\n    box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);\n}\n.btn-remove[data-v-5646c6c3] {\n    position: absolute;\n    top: -10px;\n    right: 2%;\n    color: red;\n    font-size: 15px;\n    z-index: 2;\n}\n.btn-remove[data-v-5646c6c3]:hover {\n    color: DarkRed;\n    z-index: 2;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.preview[data-v-5646c6c3] {\n    position: relative;\n    width: 100%;\n    border-radius: 2px;\n    box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);\n}\n.btn-remove[data-v-5646c6c3] {\n    position: absolute;\n    top: -10px;\n    right: 2%;\n    color: red;\n    font-size: 15px;\n    z-index: 2;\n}\n.btn-remove[data-v-5646c6c3]:hover {\n    color: DarkRed;\n    z-index: 2;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
