@@ -2294,7 +2294,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2322,11 +2321,12 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submitForm: function submitForm() {
       var takeData = this.takeData();
+      var formData = this.submitFiles(takeData);
       var self = this;
-      axios.post('http://yuri.shcherba.loc/admin/tables/flats/createFlat', takeData, {
+      axios.post('http://yuri.shcherba.loc/admin/tables/flats/createFlat', formData, {
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-          'content-type': 'application/form-data'
+          'content-type': 'multiple/form-data'
         }
       }).then(function (response) {
         self.refresh(self.success);
@@ -2370,27 +2370,13 @@ __webpack_require__.r(__webpack_exports__);
     addFiles: function addFiles() {
       this.$refs.files.click();
     },
-    submitFiles: function submitFiles() {
-      var formData = new FormData();
-
+    submitFiles: function submitFiles(formData) {
       for (var i = 0; i < this.files.length; i++) {
         var file = this.files[i];
         formData.append('files[' + i + ']', file);
       }
 
-      console.log(formData);
-      axios.post('http://yuri.shcherba.loc/admin/tables/flats/uploadImages', formData, {
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function () {
-        this.files = [];
-        console.log('SUCCESS!!');
-      })["catch"](function () {
-        this.files = [];
-        console.log('FAILURE!!');
-      });
+      return formData;
     },
     handleFilesUpload: function handleFilesUpload() {
       var uploadedFiles = this.$refs.files.files;
@@ -2517,6 +2503,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2526,7 +2513,8 @@ __webpack_require__.r(__webpack_exports__);
       checkAll: false,
       checkedNames: [],
       checkedList: [],
-      setFlat: []
+      setFlat: [],
+      files: []
     };
   },
   mounted: function mounted() {
@@ -2583,6 +2571,9 @@ __webpack_require__.r(__webpack_exports__);
       this.displayUpdate = true;
       axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlat/' + id).then(function (response) {
         _this3.setFlat = response.data;
+      });
+      axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlatImages/' + id).then(function (response) {
+        _this3.files = response.data;
       });
     },
     deleteChecked: function deleteChecked() {
@@ -2714,8 +2705,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['items'],
+  props: ['items', 'files'],
   data: function data() {
     return {
       success: false
@@ -2725,8 +2767,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submitForm: function submitForm() {
       var takeData = this.takeData();
+      var formData = this.submitFiles(takeData);
       var self = this;
-      axios.post('http://yuri.shcherba.loc/admin/tables/flats/updateFlat', takeData, {
+      axios.post('http://yuri.shcherba.loc/admin/tables/flats/updateFlat', formData, {
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
           'content-type': 'application/form-data'
@@ -2749,6 +2792,68 @@ __webpack_require__.r(__webpack_exports__);
     },
     refresh: function refresh() {
       this.$emit('refresh');
+    },
+    addFiles: function addFiles() {
+      this.$refs.files.click();
+    },
+    submitFiles: function submitFiles(formData) {
+      for (var i = 0; i < this.files.length; i++) {
+        var file = this.files[i];
+        formData.append('files[' + i + ']', file);
+      }
+
+      return formData;
+    },
+    handleFilesUpload: function handleFilesUpload() {
+      var uploadedFiles = this.$refs.files.files;
+
+      for (var i = 0; i < uploadedFiles.length; i++) {
+        this.files.push(uploadedFiles[i]);
+      }
+
+      this.getImagePreviews();
+    },
+    removeFile: function removeFile(key) {
+      this.files.splice(key, 1);
+      this.getImagePreviews();
+    },
+    getImagePreviews: function getImagePreviews() {
+      var _this = this;
+
+      var _loop = function _loop(i) {
+        if (/\.(jpe?g|png|gif)$/i.test(_this.files[i].name)) {
+          var reader = new FileReader();
+          reader.addEventListener("load", function () {
+            this.$refs['image' + parseInt(i)][0].src = reader.result;
+          }.bind(_this), false);
+          reader.readAsDataURL(_this.files[i]);
+        }
+      };
+
+      for (var i = 0; i < this.files.length; i++) {
+        _loop(i);
+      }
+    },
+    removeAllFiles: function removeAllFiles() {
+      var _this2 = this;
+
+      if (this.files) {
+        this.files.forEach(function (item) {
+          return _this2.destroyImage(item.image_id, item.image);
+        });
+      }
+
+      this.files.splice(0, this.files.length);
+      this.getImagePreviews();
+    },
+    destroyImage: function destroyImage(id, filename) {
+      if (id) {
+        axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyImage/' + id + '/' + filename).then(function (response) {
+          console.log('deleted:' + filename);
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
     }
   }
 });
@@ -9066,6 +9171,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-4860547d] {\n    background-color: #6f42c1;\n    color: white;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.preview[data-v-190c3560] {\n    position: relative;\n    width: 100%;\n    border-radius: 2px;\n    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.4), 0px 3px 2px rgba(0, 0, 0, 0.2);\n}\n.btn-remove[data-v-190c3560] {\n    position: absolute;\n    top: -10px;\n    right: 2%;\n    color: red;\n    font-size: 15px;\n    z-index: 2;\n}\n.btn-remove[data-v-190c3560]:hover {\n    color: DarkRed;\n    z-index: 2;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40252,6 +40381,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_style_index_0_id_190c3560_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_style_index_0_id_190c3560_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_style_index_0_id_190c3560_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/roles/TableRolesComponent.vue?vue&type=style&index=0&id=08e10746&scoped=true&lang=css&":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/roles/TableRolesComponent.vue?vue&type=style&index=0&id=08e10746&scoped=true&lang=css& ***!
@@ -40833,23 +40992,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateFlatsComponent.vue?vue&type=template&id=190c3560& */ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&");
+/* harmony import */ var _UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true& */ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true&");
 /* harmony import */ var _UpdateFlatsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateFlatsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _UpdateFlatsComponent_vue_vue_type_style_index_0_id_190c3560_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& */ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _UpdateFlatsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__.render,
-  _UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "190c3560",
   null
   
 )
@@ -41552,6 +41713,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_style_index_0_id_190c3560_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/style-loader/dist/cjs.js!../../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=style&index=0&id=190c3560&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/tables/roles/TableRolesComponent.vue?vue&type=style&index=0&id=08e10746&scoped=true&lang=css&":
 /*!*************************************************************************************************************************************!*\
   !*** ./resources/js/components/admin/tables/roles/TableRolesComponent.vue?vue&type=style&index=0&id=08e10746&scoped=true&lang=css& ***!
@@ -41676,19 +41850,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&":
-/*!************************************************************************************************************!*\
-  !*** ./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560& ***!
-  \************************************************************************************************************/
+/***/ "./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true& ***!
+  \************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateFlatsComponent.vue?vue&type=template&id=190c3560& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateFlatsComponent_vue_vue_type_template_id_190c3560_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true&");
 
 
 /***/ }),
@@ -42956,26 +43130,32 @@ var render = function() {
           { staticClass: "row" },
           [
             _vm._l(_vm.files, function(file, key) {
-              return _c("div", { staticClass: "form-group col-md-1" }, [
-                _c("img", {
-                  ref: "image" + parseInt(key),
-                  refInFor: true,
-                  staticClass: "preview"
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-remove",
-                    on: {
-                      click: function($event) {
-                        _vm.removeFile(parseInt(key))
+              return _c(
+                "div",
+                { staticClass: "form-group col-md-1 col-sm-4" },
+                [
+                  _c("img", {
+                    ref: "image" + parseInt(key),
+                    refInFor: true,
+                    staticClass: "preview"
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-remove",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.removeFile(parseInt(key))
+                        }
                       }
-                    }
-                  },
-                  [_vm._v("✘")]
-                )
-              ])
+                    },
+                    [_vm._v("✘")]
+                  )
+                ]
+              )
             }),
             _vm._v(" "),
             _vm.files.length
@@ -43257,7 +43437,7 @@ var render = function() {
             _c("hr"),
             _vm._v(" "),
             _c("update-flats-component", {
-              attrs: { items: _vm.setFlat },
+              attrs: { items: _vm.setFlat, files: _vm.files },
               on: { refresh: _vm.refresh }
             })
           ],
@@ -43301,10 +43481,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&":
-/*!***************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560& ***!
-  \***************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/tables/flats/UpdateFlatsComponent.vue?vue&type=template&id=190c3560&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -43442,6 +43622,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
+                step: "0.01",
                 name: "livedSquare",
                 required: "",
                 placeholder: "0"
@@ -43473,6 +43654,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
+                step: "0.01",
                 name: "commonSquare",
                 placeholder: "0",
                 required: ""
@@ -43670,8 +43852,8 @@ var render = function() {
                 {
                   name: "mask",
                   rawName: "v-mask",
-                  value: "#######",
-                  expression: "'#######'"
+                  value: "######",
+                  expression: "'######'"
                 },
                 {
                   name: "model",
@@ -43767,6 +43949,159 @@ var render = function() {
               }
             })
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "form-group col-md-12" }, [
+            _c(
+              "div",
+              { staticClass: "custom-file" },
+              [
+                _c("input", {
+                  ref: "files",
+                  staticClass: "custom-file-input",
+                  attrs: { type: "file", id: "inputFile", multiple: "" },
+                  on: { change: _vm.handleFilesUpload }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "custom-file-label",
+                    attrs: { for: "inputFile" }
+                  },
+                  [_vm._v("Выбирите изображения")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.files, function(file) {
+                  return _c("div", { staticClass: "custom-file-label" }, [
+                    _vm.files.length == 1
+                      ? _c("div", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(file.image ? file.image : file.name) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.files.length != 1
+                      ? _c("div", [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.files.length) +
+                              " фото выбрано\n                        "
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.files.length
+          ? _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(_vm.files, function(file, key) {
+                return _c("div", { staticClass: "form-group col-md-2" }, [
+                  file.image
+                    ? _c("img", {
+                        staticClass: "preview",
+                        attrs: {
+                          src: "http://yuri.shcherba.loc/uploads/" + file.image
+                        }
+                      })
+                    : !file.image
+                    ? _c("img", {
+                        ref: "image" + parseInt(key),
+                        refInFor: true,
+                        staticClass: "preview"
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  file.image
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-remove",
+                          attrs: { type: "button" },
+                          on: {
+                            click: [
+                              function($event) {
+                                $event.preventDefault()
+                                _vm.removeFile(parseInt(key))
+                              },
+                              function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "preven",
+                                    undefined,
+                                    $event.key,
+                                    undefined
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.destroyImage(
+                                  file.image_id,
+                                  file.image
+                                )
+                              }
+                            ]
+                          }
+                        },
+                        [_vm._v("\n                    ✘\n                ")]
+                      )
+                    : !file.image
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-remove",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.removeFile(parseInt(key))
+                            }
+                          }
+                        },
+                        [_vm._v("\n                    ✘\n                ")]
+                      )
+                    : _vm._e()
+                ])
+              }),
+              0
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm.files.length
+            ? _c("div", { staticClass: "form-group col-md-12 text-center" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger form-control",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.removeAllFiles($event)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Удалить все изображения\n                "
+                    )
+                  ]
+                )
+              ])
+            : _vm._e()
         ]),
         _vm._v(" "),
         _vm._m(0)
@@ -45581,7 +45916,7 @@ var render = function() {
                 },
                 domProps: { value: _vm.price_max },
                 on: {
-                  keyup: _vm.filterChanges,
+                  change: _vm.filterChanges,
                   input: function($event) {
                     if ($event.target.composing) {
                       return
@@ -45760,7 +46095,11 @@ var render = function() {
                       _c("figure", [
                         _c("img", {
                           staticClass: "img-fluid",
-                          attrs: { src: flat.image, alt: "Image" }
+                          attrs: {
+                            src:
+                              "http://yuri.shcherba.loc/uploads/" + flat.image,
+                            alt: "Image"
+                          }
                         })
                       ]),
                       _vm._v(" "),
