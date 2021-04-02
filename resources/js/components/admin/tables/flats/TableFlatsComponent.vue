@@ -18,7 +18,8 @@
                                    placeholder="Введите ваш запрос">
                         </div>
                         <div class="col-md-2">
-                            <button @click="refresh" class="btn btn-info mt-1 refresh"><i class="fas fa-sync-alt"></i></button>
+                            <button @click="refresh" class="btn btn-info mt-1 refresh"><i class="fas fa-sync-alt"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -42,11 +43,14 @@
                     <th scope="col">Команды</th>
                 </tr>
                 </thead>
-                <tbody v-for="(item,index) in searchList">
-                <tr :class="{ done: checkedList[index] }">
-                    <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
+                <div v-if="paginatedData.length==0" class="hidden">
+                    {{pageNumber=Number(pageCount)-1}}
+                </div>
+                <tbody v-for="(item) in searchList">
+                <tr :class="{ done: checkedList[item.id] }">
+                    <th scope="row"><input @change="checked(item.id , (item.id) )" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.id }}</td>
                     <td>{{ item.region }}</td>
                     <td>{{ item.city }}</td>
                     <td>{{ item.street }}</td>
@@ -63,6 +67,19 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="row justify-content-end">
+                <div class="col-md-2 mr-1">
+                    <select v-model="size" class="form-control form-control-sm">
+                        <option value="5">5 элементов</option>
+                        <option value="10">10 элементов</option>
+                        <option value="15">15 элементов</option>
+                        <option value="25">25 элементов</option>
+                        <option value="50">50 элементов</option>
+                        <option value="100">100 элементов</option>
+                        <option :value="items.length">Все элементы</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div v-if="displayUpdate">
             <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -80,6 +97,13 @@
                 @refresh="refresh"
             ></create-flats-component>
         </div>
+        <div v-if="search=='' && !displayUpdate && !displayCreate">
+            <pagination-component
+                :pageCount="pageCount"
+                :pageNumber="pageNumber"
+                @paginatedPage="paginatedPage"
+            ></pagination-component>
+        </div>
     </div>
 </template>
 
@@ -95,7 +119,9 @@ export default {
             checkedList: [],
             setFlat: [],
             files: [],
-            search: ''
+            search: '',
+            pageNumber: 0,
+            size: 25,
         }
     },
     mounted() {
@@ -114,13 +140,27 @@ export default {
                         item.rooms == search ||
                         item.floor == search ||
                         item.commonSquare == search ||
-                        String(item.price).indexOf(search) > -1
+                        String(item.price).indexOf(search) > -1 ||
+                        item.id == search
                 })
             }
-            return this.items
+            return this.paginatedData
         },
+        pageCount() {
+            let l = this.items.length,
+                s = this.size;
+            return Math.ceil(l / s);
+        },
+        paginatedData() {
+            const start = this.pageNumber * Number(this.size),
+                end = Number(start) + Number(this.size);
+            return this.items.slice(start, end);
+        }
     },
     methods: {
+        paginatedPage: function (currentPage) {
+            this.pageNumber = currentPage
+        },
         showAllFlats: function () {
             axios.get('http://yuri.shcherba.loc/admin/tables/flats/showFlats').then((response) => {
                 this.items = response.data
@@ -135,6 +175,7 @@ export default {
             }
         },
         refresh: function () {
+            console.log('refresh')
             this.displayUpdate = false
             this.displayCreate = false
             this.checkAll = false
@@ -145,8 +186,9 @@ export default {
         },
         deleteById: function (id) {
             axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then((response) => {
-                this.items = response.data
-                this.items = this.items.allFlats
+                // this.items = response.data
+                // this.items = this.items.allFlats
+                this.refresh()
             });
         },
         destroy: function (id) {
@@ -155,8 +197,8 @@ export default {
                 this.deleteById(id)
             }
         },
-        checked: function (id, index) {
-            this.checkedList[index] = !this.checkedList[index]
+        checked: function (id) {
+            this.checkedList[id] = !this.checkedList[id]
         },
         addNew: function () {
             this.displayCreate = true
@@ -182,17 +224,21 @@ export default {
             }
         },
         checkedAll: function () {
-            let all = []
-            this.items.forEach(function (item, index) {
-                all[index] = item.id
-            })
-            if (this.checkAll)
-                this.checkedNames = all
-            else
-                this.checkedNames = []
-            for (let k = 0; k < all.length; k++) {
-                if (this.checkedList[k] != true || this.checkedNames.length == 0)
-                    this.checked(all[k], k)
+            const self = this
+            let start = self.pageNumber * Number(self.size)
+            if (this.checkAll){
+                this.paginatedData.forEach(function (item) {
+                    self.checkedNames[start] = item.id
+                    start++
+                })
+                this.checkedNames.forEach(function (item) {
+                    if(self.checkedList[item] != true){self.checked(item)}
+                })
+            } else{
+                this.checkedList.forEach(function (item, index) {
+                    if(self.checkedList[index] != false){self.checked(index)}
+                })
+                self.checkedNames = []
             }
         }
     }
@@ -205,7 +251,7 @@ export default {
     color: white;
 }
 
-.refresh:hover{
+.refresh:hover {
     color: #6f42c1;
 }
 
