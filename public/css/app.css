@@ -11304,6 +11304,11 @@ a:hover {
   bottom: 0;
 }
 
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
 /* Blocks */
 
 .top-bar {

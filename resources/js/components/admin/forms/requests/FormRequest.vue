@@ -37,6 +37,9 @@
                     <th scope="col">Команды</th>
                 </tr>
                 </thead>
+                <div v-if="paginatedData.length==0" class="hidden">
+                    {{pageNumber=Number(pageCount)-1}}
+                </div>
                 <tbody v-for="(item,index) in searchList">
                 <tr :class="{ done: checkedList[index] }">
                     <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
@@ -53,6 +56,19 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="row justify-content-end">
+                <div class="col-md-2 mr-1">
+                    <select v-model="size" class="form-control form-control-sm">
+                        <option value="5">5 элементов</option>
+                        <option value="10">10 элементов</option>
+                        <option value="15">15 элементов</option>
+                        <option value="25">25 элементов</option>
+                        <option value="50">50 элементов</option>
+                        <option value="100">100 элементов</option>
+                        <option :value="items.length">Все элементы</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div v-if="display">
             <button @click='refresh' class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -69,6 +85,13 @@
                 @refresh="refresh"
             ></create-request>
         </div>
+        <div v-if="search=='' && !display && !createDisplay">
+            <pagination-component
+                :pageCount="pageCount"
+                :pageNumber="pageNumber"
+                @paginatedPage="paginatedPage"
+            ></pagination-component>
+        </div>
     </div>
 </template>
 <script>
@@ -82,7 +105,9 @@ export default {
             checkedNames: [],
             checkedList: [],
             checkAll: false,
-            search: ''
+            search: '',
+            pageNumber: 0,
+            size: 25,
         }
     },
     mounted() {
@@ -97,10 +122,23 @@ export default {
                         item.phone.toLowerCase().indexOf(search) > -1
                 })
             }
-            return this.items
+            return this.paginatedData
         },
+        pageCount() {
+            let l = this.items.length,
+                s = this.size;
+            return Math.ceil(l / s);
+        },
+        paginatedData() {
+            const start = this.pageNumber * Number(this.size),
+                end = Number(start) + Number(this.size);
+            return this.items.slice(start, end);
+        }
     },
     methods: {
+        paginatedPage: function (currentPage) {
+            this.pageNumber = currentPage
+        },
         showAll: function () {
             axios.get('http://yuri.shcherba.loc/admin/forms/requests/getAll').then((response) => {
                 this.items = response.data

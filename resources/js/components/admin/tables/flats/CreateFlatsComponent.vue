@@ -150,9 +150,9 @@ export default {
             }).then(function (response) {
                 self.refresh(self.success)
             }).catch(err => console.log(err));
-            if (this.files) {
-                this.submitFiles()
-            }
+            // if (this.files) {
+            //     this.submitFiles()
+            // }
         },
         takeData: function () {
             let data = {

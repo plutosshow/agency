@@ -2091,6 +2091,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2101,7 +2124,9 @@ __webpack_require__.r(__webpack_exports__);
       checkedNames: [],
       checkedList: [],
       checkAll: false,
-      search: ''
+      search: '',
+      pageNumber: 0,
+      size: 25
     };
   },
   mounted: function mounted() {
@@ -2116,10 +2141,23 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      return this.items;
+      return this.paginatedData;
+    },
+    pageCount: function pageCount() {
+      var l = this.items.length,
+          s = this.size;
+      return Math.ceil(l / s);
+    },
+    paginatedData: function paginatedData() {
+      var start = this.pageNumber * Number(this.size),
+          end = Number(start) + Number(this.size);
+      return this.items.slice(start, end);
     }
   },
   methods: {
+    paginatedPage: function paginatedPage(currentPage) {
+      this.pageNumber = currentPage;
+    },
     showAll: function showAll() {
       var _this = this;
 
@@ -2357,11 +2395,9 @@ __webpack_require__.r(__webpack_exports__);
         self.refresh(self.success);
       })["catch"](function (err) {
         return console.log(err);
-      });
-
-      if (this.files) {
-        this.submitFiles();
-      }
+      }); // if (this.files) {
+      //     this.submitFiles()
+      // }
     },
     takeData: function takeData() {
       var data = {
@@ -2541,6 +2577,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2552,7 +2612,9 @@ __webpack_require__.r(__webpack_exports__);
       checkedList: [],
       setFlat: [],
       files: [],
-      search: ''
+      search: '',
+      pageNumber: 0,
+      size: 25
     };
   },
   mounted: function mounted() {},
@@ -2564,14 +2626,27 @@ __webpack_require__.r(__webpack_exports__);
       if (this.search) {
         var search = this.search.toLowerCase();
         return this.items.filter(function (item) {
-          return item.city.toLowerCase().indexOf(search) > -1 || item.region.toLowerCase().indexOf(search) > -1 || item.street.toLowerCase().indexOf(search) > -1 || item.rooms == search || item.floor == search || item.commonSquare == search || String(item.price).indexOf(search) > -1;
+          return item.city.toLowerCase().indexOf(search) > -1 || item.region.toLowerCase().indexOf(search) > -1 || item.street.toLowerCase().indexOf(search) > -1 || item.rooms == search || item.floor == search || item.commonSquare == search || String(item.price).indexOf(search) > -1 || item.id == search;
         });
       }
 
-      return this.items;
+      return this.paginatedData;
+    },
+    pageCount: function pageCount() {
+      var l = this.items.length,
+          s = this.size;
+      return Math.ceil(l / s);
+    },
+    paginatedData: function paginatedData() {
+      var start = this.pageNumber * Number(this.size),
+          end = Number(start) + Number(this.size);
+      return this.items.slice(start, end);
     }
   },
   methods: {
+    paginatedPage: function paginatedPage(currentPage) {
+      this.pageNumber = currentPage;
+    },
     showAllFlats: function showAllFlats() {
       var _this = this;
 
@@ -2588,6 +2663,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     refresh: function refresh() {
+      console.log('refresh');
       this.displayUpdate = false;
       this.displayCreate = false;
       this.checkAll = false;
@@ -2600,8 +2676,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then(function (response) {
-        _this2.items = response.data;
-        _this2.items = _this2.items.allFlats;
+        // this.items = response.data
+        // this.items = this.items.allFlats
+        _this2.refresh();
       });
     },
     destroy: function destroy(id) {
@@ -2611,8 +2688,8 @@ __webpack_require__.r(__webpack_exports__);
         this.deleteById(id);
       }
     },
-    checked: function checked(id, index) {
-      this.checkedList[index] = !this.checkedList[index];
+    checked: function checked(id) {
+      this.checkedList[id] = !this.checkedList[id];
     },
     addNew: function addNew() {
       this.displayCreate = true;
@@ -2646,14 +2723,26 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     checkedAll: function checkedAll() {
-      var all = [];
-      this.items.forEach(function (item, index) {
-        all[index] = item.id;
-      });
-      if (this.checkAll) this.checkedNames = all;else this.checkedNames = [];
+      var self = this;
+      var start = self.pageNumber * Number(self.size);
 
-      for (var k = 0; k < all.length; k++) {
-        if (this.checkedList[k] != true || this.checkedNames.length == 0) this.checked(all[k], k);
+      if (this.checkAll) {
+        this.paginatedData.forEach(function (item) {
+          self.checkedNames[start] = item.id;
+          start++;
+        });
+        this.checkedNames.forEach(function (item) {
+          if (self.checkedList[item] != true) {
+            self.checked(item);
+          }
+        });
+      } else {
+        this.checkedList.forEach(function (item, index) {
+          if (self.checkedList[index] != false) {
+            self.checked(index);
+          }
+        });
+        self.checkedNames = [];
       }
     }
   }
@@ -3173,6 +3262,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3185,7 +3297,9 @@ __webpack_require__.r(__webpack_exports__);
       checkedList: [],
       setRole: [],
       listBy: '',
-      search: ''
+      search: '',
+      pageNumber: 0,
+      size: 25
     };
   },
   mounted: function mounted() {},
@@ -3201,10 +3315,23 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      return this.items;
+      return this.paginatedData;
+    },
+    pageCount: function pageCount() {
+      var l = this.items.length,
+          s = this.size;
+      return Math.ceil(l / s);
+    },
+    paginatedData: function paginatedData() {
+      var start = this.pageNumber * Number(this.size),
+          end = Number(start) + Number(this.size);
+      return this.items.slice(start, end);
     }
   },
   methods: {
+    paginatedPage: function paginatedPage(currentPage) {
+      this.pageNumber = currentPage;
+    },
     showAll: function showAll() {
       var _this = this;
 
@@ -3604,6 +3731,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3618,7 +3768,9 @@ __webpack_require__.r(__webpack_exports__);
       checkedNames: [],
       checkedList: [],
       setUser: [],
-      search: ''
+      search: '',
+      pageNumber: 0,
+      size: 25
     };
   },
   mounted: function mounted() {},
@@ -3627,8 +3779,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     searchList: function searchList() {
-      console.log(this.items);
-
       if (this.search) {
         var search = this.search.toLowerCase();
         return this.items.filter(function (item) {
@@ -3636,10 +3786,23 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
 
-      return this.items;
+      return this.paginatedData;
+    },
+    pageCount: function pageCount() {
+      var l = this.items.length,
+          s = this.size;
+      return Math.ceil(l / s);
+    },
+    paginatedData: function paginatedData() {
+      var start = this.pageNumber * Number(this.size),
+          end = Number(start) + Number(this.size);
+      return this.items.slice(start, end);
     }
   },
   methods: {
+    paginatedPage: function paginatedPage(currentPage) {
+      this.pageNumber = currentPage;
+    },
     showAllUsers: function showAllUsers() {
       var _this = this;
 
@@ -3660,7 +3823,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('http://yuri.shcherba.loc/admin/tables/users/destroyUser/' + id).then(function (response) {
-        _this2.items = response.data;
+        // this.items = response.data
+        _this2.refresh();
       });
     },
     destroyUser: function destroyUser(id) {
@@ -9276,7 +9440,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-4860547d] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-4860547d]:hover{\n    color: #6f42c1;\n}\n.refresh[data-v-4860547d]:active {\n    font-size: 15px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-4860547d] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-4860547d]:hover {\n    color: #6f42c1;\n}\n.refresh[data-v-4860547d]:active {\n    font-size: 15px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42594,6 +42758,16 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _vm.paginatedData.length == 0
+                ? _c("div", { staticClass: "hidden" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s((_vm.pageNumber = Number(_vm.pageCount) - 1)) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
@@ -42684,7 +42858,70 @@ var render = function() {
               })
             ],
             2
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-end" }, [
+            _c("div", { staticClass: "col-md-2 mr-1" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.size,
+                      expression: "size"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.size = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "5" } }, [
+                    _vm._v("5 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "10" } }, [
+                    _vm._v("10 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "15" } }, [
+                    _vm._v("15 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "25" } }, [
+                    _vm._v("25 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "50" } }, [
+                    _vm._v("50 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "100" } }, [
+                    _vm._v("100 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { domProps: { value: _vm.items.length } }, [
+                    _vm._v("Все элементы")
+                  ])
+                ]
+              )
+            ])
+          ])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -42724,6 +42961,19 @@ var render = function() {
             _c("hr"),
             _vm._v(" "),
             _c("create-request", { on: { refresh: _vm.refresh } })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.search == "" && !_vm.display && !_vm.createDisplay
+      ? _c(
+          "div",
+          [
+            _c("pagination-component", {
+              attrs: { pageCount: _vm.pageCount, pageNumber: _vm.pageNumber },
+              on: { paginatedPage: _vm.paginatedPage }
+            })
           ],
           1
         )
@@ -43497,9 +43747,19 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(_vm.searchList, function(item, index) {
+              _vm.paginatedData.length == 0
+                ? _c("div", { staticClass: "hidden" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s((_vm.pageNumber = Number(_vm.pageCount) - 1)) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.searchList, function(item) {
                 return _c("tbody", [
-                  _c("tr", { class: { done: _vm.checkedList[index] } }, [
+                  _c("tr", { class: { done: _vm.checkedList[item.id] } }, [
                     _c("th", { attrs: { scope: "row" } }, [
                       _c("input", {
                         directives: [
@@ -43540,14 +43800,14 @@ var render = function() {
                               }
                             },
                             function($event) {
-                              _vm.checked(item.id, index)
+                              _vm.checked(item.id, item.id)
                             }
                           ]
                         }
                       })
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _c("td", [_vm._v(_vm._s(item.id))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(item.region))]),
                     _vm._v(" "),
@@ -43597,7 +43857,70 @@ var render = function() {
               })
             ],
             2
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-end" }, [
+            _c("div", { staticClass: "col-md-2 mr-1" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.size,
+                      expression: "size"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.size = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "5" } }, [
+                    _vm._v("5 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "10" } }, [
+                    _vm._v("10 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "15" } }, [
+                    _vm._v("15 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "25" } }, [
+                    _vm._v("25 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "50" } }, [
+                    _vm._v("50 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "100" } }, [
+                    _vm._v("100 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { domProps: { value: _vm.items.length } }, [
+                    _vm._v("Все элементы")
+                  ])
+                ]
+              )
+            ])
+          ])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -43637,6 +43960,19 @@ var render = function() {
             _c("hr"),
             _vm._v(" "),
             _c("create-flats-component", { on: { refresh: _vm.refresh } })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.search == "" && !_vm.displayUpdate && !_vm.displayCreate
+      ? _c(
+          "div",
+          [
+            _c("pagination-component", {
+              attrs: { pageCount: _vm.pageCount, pageNumber: _vm.pageNumber },
+              on: { paginatedPage: _vm.paginatedPage }
+            })
           ],
           1
         )
@@ -44672,6 +45008,16 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _vm.paginatedData.length == 0
+                ? _c("div", { staticClass: "hidden" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s((_vm.pageNumber = Number(_vm.pageCount) - 1)) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
@@ -44776,7 +45122,70 @@ var render = function() {
               })
             ],
             2
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-end" }, [
+            _c("div", { staticClass: "col-md-2 mr-1" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.size,
+                      expression: "size"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.size = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "5" } }, [
+                    _vm._v("5 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "10" } }, [
+                    _vm._v("10 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "15" } }, [
+                    _vm._v("15 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "25" } }, [
+                    _vm._v("25 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "50" } }, [
+                    _vm._v("50 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "100" } }, [
+                    _vm._v("100 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { domProps: { value: _vm.items.length } }, [
+                    _vm._v("Все элементы")
+                  ])
+                ]
+              )
+            ])
+          ])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -44843,6 +45252,22 @@ var render = function() {
             _c("list-roles-component", {
               attrs: { listBy: _vm.listBy },
               on: { refresh: _vm.refresh }
+            })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.search == "" &&
+    !_vm.displayList &&
+    !_vm.displayCreate &&
+    !_vm.displayUpdate
+      ? _c(
+          "div",
+          [
+            _c("pagination-component", {
+              attrs: { pageCount: _vm.pageCount, pageNumber: _vm.pageNumber },
+              on: { paginatedPage: _vm.paginatedPage }
             })
           ],
           1
@@ -45498,6 +45923,16 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _vm.paginatedData.length == 0
+                ? _c("div", { staticClass: "hidden" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s((_vm.pageNumber = Number(_vm.pageCount) - 1)) +
+                        "\n            "
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
@@ -45594,7 +46029,70 @@ var render = function() {
               })
             ],
             2
-          )
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row justify-content-end" }, [
+            _c("div", { staticClass: "col-md-2 mr-1" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.size,
+                      expression: "size"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.size = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "5" } }, [
+                    _vm._v("5 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "10" } }, [
+                    _vm._v("10 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "15" } }, [
+                    _vm._v("15 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "25" } }, [
+                    _vm._v("25 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "50" } }, [
+                    _vm._v("50 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "100" } }, [
+                    _vm._v("100 элементов")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { domProps: { value: _vm.items.length } }, [
+                    _vm._v("Все элементы")
+                  ])
+                ]
+              )
+            ])
+          ])
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -45634,6 +46132,19 @@ var render = function() {
             _c("hr"),
             _vm._v(" "),
             _c("create-users-component", { on: { refresh: _vm.refresh } })
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.search == "" && !_vm.displayUpdate && !_vm.displayCreate
+      ? _c(
+          "div",
+          [
+            _c("pagination-component", {
+              attrs: { pageCount: _vm.pageCount, pageNumber: _vm.pageNumber },
+              on: { paginatedPage: _vm.paginatedPage }
+            })
           ],
           1
         )
