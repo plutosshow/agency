@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="offset-lg-3 offset-md-3 col-lg-6">
+                    <div class="offset-lg-3 col-lg-6">
                         <div class="card">
                             <div class="card-header border-0">
                                 <h5>

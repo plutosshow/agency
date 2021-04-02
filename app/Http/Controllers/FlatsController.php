@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Flats;
 use App\Models\imgFlats;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Providers\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class FlatsController extends Controller
 {
@@ -62,7 +64,9 @@ class FlatsController extends Controller
      */
     public function createFlat(Request $request)
     {
-        Flats::create([
+        $now = Carbon::now();
+
+        $id_flat = Flats::insertGetId([
             'rooms'         => $request->get('rooms'),
             'floor'         => $request->get('floor'),
             'price'         => $request->get('price'),
@@ -76,8 +80,22 @@ class FlatsController extends Controller
             'city'          => $request->get('city'),
             'street'        => $request->get('street'),
             'building'      => $request->get('building'),
-            'zip'           => $request->get('zip')
+            'zip'           => $request->get('zip'),
+            'created_at'    => $now,
+            'updated_at'    => $now
         ]);
+
+        $files = $request->file('files');
+        $paths = $this->uploadImages($files);
+
+        foreach ($paths as $path){
+            DB::table('img_flats')->insert([
+                'flat'          => $id_flat,
+                'image'         => $path,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ]);
+        }
 
         return $this->showAllFlats();
     }
@@ -88,6 +106,10 @@ class FlatsController extends Controller
 
     public function getFlat($id){
         return Flats::find($id);
+    }
+
+    public function getFlatImages($id){
+        return DB::table('img_flats')->select('id as image_id', 'image','show_on_main')->where('flat', $id)->get();
     }
 
     /**
@@ -136,6 +158,27 @@ class FlatsController extends Controller
             'building'      => $request->get('building'),
             'zip'           => $request->get('zip')
         ]);
+
+        $files = $request->file('files');
+        $now = Carbon::now();
+        dump($files);
+        if($files){
+            $paths = $this->uploadImages($files);
+            foreach ($paths as $path){
+                dump($path);
+                DB::table('img_flats')->insert([
+                    'flat'          => $request->get('id'),
+                    'image'         => $path,
+                    'created_at'    => $now,
+                    'updated_at'    => $now
+                ]);
+            }
+        }
+    }
+
+    public function destroyImage($id, $filename){
+        Storage::disk('uploads')->delete($filename);
+        DB::table('img_flats')->delete($id);
     }
 
     /**
@@ -149,11 +192,16 @@ class FlatsController extends Controller
         DB::table('flats')->where('id', $id)->update([
             'relevant'  => '0'
         ]);
-
         return $this->showAllFlats();
     }
 
-    public function uploadImages(Request $request){
-        dd($request->file('files'));
+    public function uploadImages($files){
+        $paths = [];
+        if($files){
+            foreach ($files as $file){
+                $paths[] = $file->store('', 'uploads');
+            }
+        }
+        return $paths;
     }
 }

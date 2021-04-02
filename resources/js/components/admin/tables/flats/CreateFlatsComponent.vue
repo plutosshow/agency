@@ -94,10 +94,9 @@
                 </div>
             </div>
             <div class="row">
-                <div v-for="(file, key) in files" class="form-group col-md-1">
-                    <img class="preview" v-bind:ref="'image'+parseInt( key )">
-                        <button class="btn btn-remove" @click="removeFile(parseInt( key ))">&#10008;</button>
-                    </img>
+                <div v-for="(file, key) in files" class="form-group col-md-1 col-sm-4">
+                    <img class="preview" v-bind:ref="'image'+parseInt( key )"/>
+                    <button type="button" class="btn btn-remove" @click.prevent="removeFile(parseInt( key ))">&#10008;</button>
                 </div>
                 <div class="form-group col-md-12 text-center" v-if="files.length">
                     <button class="btn btn-danger form-control" @click="removeAllFiles">Удалить все изображения</button>
@@ -141,11 +140,12 @@ export default {
     methods: {
         submitForm: function () {
             let takeData = this.takeData()
+            let formData = this.submitFiles(takeData)
             let self = this
-            axios.post('http://yuri.shcherba.loc/admin/tables/flats/createFlat', takeData, {
+            axios.post('http://yuri.shcherba.loc/admin/tables/flats/createFlat', formData, {
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'content-type': 'application/form-data'
+                    'content-type': 'multiple/form-data'
                 }
             }).then(function (response) {
                 self.refresh(self.success)
@@ -184,29 +184,12 @@ export default {
         addFiles() {
             this.$refs.files.click();
         },
-        submitFiles() {
-
-            let formData = new FormData();
+        submitFiles(formData) {
             for (var i = 0; i < this.files.length; i++) {
                 let file = this.files[i];
                 formData.append('files[' + i + ']', file);
             }
-            console.log(formData)
-            axios.post('http://yuri.shcherba.loc/admin/tables/flats/uploadImages', formData, {
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            ).then(function () {
-                this.files = [];
-                console.log('SUCCESS!!');
-            })
-                .catch(function () {
-                    this.files = [];
-                    console.log('FAILURE!!');
-                });
+            return formData
         },
         handleFilesUpload() {
             let uploadedFiles = this.$refs.files.files;

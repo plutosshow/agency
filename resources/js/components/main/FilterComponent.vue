@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <label>Цена до</label>
-                    <input @keyup="filterChanges" v-model="price_max" type="number" class="form-control" name="Price_max" placeholder="0 руб">
+                    <input @change="filterChanges" v-model="price_max" type="number" class="form-control" name="Price_max" placeholder="0 руб">
                 </div>
                 <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                     <label>Поиск по вашему желанию</label>

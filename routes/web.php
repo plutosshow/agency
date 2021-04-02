@@ -66,7 +66,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('admin/tables/flats/createFlat', 'App\Http\Controllers\FlatsController@createFlat')->name('table.flats.createFlat');
     Route::post('admin/tables/flats/updateFlat', 'App\Http\Controllers\FlatsController@updateFlat')->name('table.flats.updateFlat');
     //ImagesFlats
-    Route::post('admin/tables/flats/uploadImages', 'App\Http\Controllers\FlatsController@uploadImages')->name('table.flats.uploadImages');
+    Route::get('admin/tables/flats/getFlatImages/{id}', 'App\Http\Controllers\FlatsController@getFlatImages')->name('table.flats.getFlatImages');
+    Route::get('admin/tables/flats/destroyImage/{id}/{filename}', 'App\Http\Controllers\FlatsController@destroyImage')->name('table.flats.destroyImage');
 
 
 

@@ -2,13 +2,25 @@
     <div class="card-body table-responsive-xl">
         <div v-if="!displayUpdate && !displayCreate">
             <div class="row">
-                <div class="col-md-11">
-                    <button @click="addNew" class="btn btn-primary">Добавить новый объект</button>
-                    <button @click="deleteChecked" class="btn btn-danger">Удалить отмеченные</button>
-
+                <div class="col-md-6">
+                    <div class="row justify-content-start">
+                        <div class="col-md-12">
+                            <button @click="addNew" class="btn btn-primary mr-2 mt-1">Добавить новый объект</button>
+                            <button @click="deleteChecked" class="btn btn-danger mt-1">Удалить отмеченные</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-1">
-                    <button @click="refresh" class="btn"><i class="fas fa-sync-alt"></i></button>
+                <div class="col-md-6">
+                    <div class="row justify-content-end">
+
+                        <div class="col-md-7">
+                            <input v-model="search" class="form-control form-control-sm mt-1"
+                                   placeholder="Введите ваш запрос">
+                        </div>
+                        <div class="col-md-2">
+                            <button @click="refresh" class="btn btn-info mt-1 refresh"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -30,7 +42,7 @@
                     <th scope="col">Команды</th>
                 </tr>
                 </thead>
-                <tbody v-for="(item,index) in items">
+                <tbody v-for="(item,index) in searchList">
                 <tr :class="{ done: checkedList[index] }">
                     <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
@@ -57,6 +69,7 @@
             <hr>
             <update-flats-component
                 :items="setFlat"
+                :files="files"
                 @refresh="refresh"
             ></update-flats-component>
         </div>
@@ -80,11 +93,32 @@ export default {
             checkAll: false,
             checkedNames: [],
             checkedList: [],
-            setFlat: []
+            setFlat: [],
+            files: [],
+            search: ''
         }
     },
     mounted() {
+    },
+    beforeMount() {
         this.showAllFlats()
+    },
+    computed: {
+        searchList: function () {
+            if (this.search) {
+                let search = this.search.toLowerCase()
+                return this.items.filter(function (item) {
+                    return item.city.toLowerCase().indexOf(search) > -1 ||
+                        item.region.toLowerCase().indexOf(search) > -1 ||
+                        item.street.toLowerCase().indexOf(search) > -1 ||
+                        item.rooms == search ||
+                        item.floor == search ||
+                        item.commonSquare == search ||
+                        String(item.price).indexOf(search) > -1
+                })
+            }
+            return this.items
+        },
     },
     methods: {
         showAllFlats: function () {
@@ -106,6 +140,7 @@ export default {
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
+            this.search = ''
             this.showAllFlats()
         },
         deleteById: function (id) {
@@ -130,6 +165,9 @@ export default {
             this.displayUpdate = true
             axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlat/' + id).then((response) => {
                 this.setFlat = response.data
+            });
+            axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlatImages/' + id).then((response) => {
+                this.files = response.data
             });
         },
         deleteChecked: function () {
@@ -165,5 +203,13 @@ export default {
 .done {
     background-color: #6f42c1;
     color: white;
+}
+
+.refresh:hover{
+    color: #6f42c1;
+}
+
+.refresh:active {
+    font-size: 15px;
 }
 </style>

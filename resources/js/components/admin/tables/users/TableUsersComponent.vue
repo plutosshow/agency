@@ -2,13 +2,25 @@
     <div class="card-body table-responsive-xl">
         <div v-if="!displayUpdate && !displayCreate">
             <div class="row">
-                <div class="col-md-11">
-                    <button @click="addNewUser" class="btn btn-primary">Добавить пользователя</button>
-                    <button @click="deleteChecked" class="btn btn-danger" >Удалить отмеченные</button>
-
+                <div class="col-md-6">
+                    <div class="row justify-content-start">
+                        <div class="col-md-12">
+                            <button @click="addNew" class="btn btn-primary mr-2 mt-1">Добавить пользователя</button>
+                            <button @click="deleteChecked" class="btn btn-danger mt-1">Удалить отмеченные</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-1">
-                    <button @click="refresh" class="btn"><i class="fas fa-sync-alt"></i></button>
+                <div class="col-md-6">
+                    <div class="row justify-content-end">
+
+                        <div class="col-md-7">
+                            <input v-model="search" class="form-control form-control-sm mt-1"
+                                   placeholder="Введите ваш запрос">
+                        </div>
+                        <div class="col-md-2">
+                            <button @click="refresh" class="btn btn-info mt-1 refresh"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -28,7 +40,7 @@
                     <th scope="col">Команды</th>
                 </tr>
                 </thead>
-                <tbody v-for="(item,index) in items">
+                <tbody v-for="(item,index) in searchList">
                 <tr :class="{ done: checkedList[index] }">
                     <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
@@ -78,11 +90,29 @@ export default {
             checkAll: false,
             checkedNames: [],
             checkedList: [],
-            setUser: []
+            setUser: [],
+            search: ''
         }
     },
     mounted() {
+    },
+    beforeMount() {
         this.showAllUsers()
+    },
+    computed: {
+        searchList: function () {
+            console.log(this.items)
+            if (this.search) {
+                let search = this.search.toLowerCase()
+                return this.items.filter(function (item) {
+                    return item.name.toLowerCase().indexOf(search) > -1 ||
+                        item.patronymic.toLowerCase().indexOf(search) > -1 ||
+                        item.surname.toLowerCase().indexOf(search) > -1 ||
+                        item.email.toLowerCase().indexOf(search) > -1
+                })
+            }
+            return this.items
+        },
     },
     methods: {
         showAllUsers: function () {
@@ -96,6 +126,7 @@ export default {
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
+            this.search = ''
             this.showAllUsers()
         },
         deleteById: function (id) {
@@ -111,7 +142,7 @@ export default {
         checked: function (id, index) {
             this.checkedList[index] = !this.checkedList[index]
         },
-        addNewUser: function () {
+        addNew: function () {
             this.displayCreate = true
         },
         updateUser: function (id) {
@@ -153,5 +184,12 @@ export default {
 .done {
     background-color: #6f42c1;
     color: white;
+}
+.refresh:hover{
+    color: #6f42c1;
+}
+
+.refresh:active {
+    font-size: 15px;
 }
 </style>

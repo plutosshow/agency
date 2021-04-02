@@ -2079,6 +2079,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2088,11 +2100,24 @@ __webpack_require__.r(__webpack_exports__);
       createDisplay: false,
       checkedNames: [],
       checkedList: [],
-      checkAll: false
+      checkAll: false,
+      search: ''
     };
   },
   mounted: function mounted() {
     this.showAll();
+  },
+  computed: {
+    searchList: function searchList() {
+      if (this.search) {
+        var search = this.search.toLowerCase();
+        return this.items.filter(function (item) {
+          return item.name.toLowerCase().indexOf(search) > -1 || item.phone.toLowerCase().indexOf(search) > -1;
+        });
+      }
+
+      return this.items;
+    }
   },
   methods: {
     showAll: function showAll() {
@@ -2120,10 +2145,10 @@ __webpack_require__.r(__webpack_exports__);
       this.checkedList = [];
       this.display = false;
       this.createDisplay = false;
+      this.search = '';
       this.showAll();
-      console.log();
     },
-    createRequest: function createRequest() {
+    addNew: function addNew() {
       this.createDisplay = true;
     },
     checked: function checked(id, index) {
@@ -2504,6 +2529,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2514,11 +2551,25 @@ __webpack_require__.r(__webpack_exports__);
       checkedNames: [],
       checkedList: [],
       setFlat: [],
-      files: []
+      files: [],
+      search: ''
     };
   },
-  mounted: function mounted() {
+  mounted: function mounted() {},
+  beforeMount: function beforeMount() {
     this.showAllFlats();
+  },
+  computed: {
+    searchList: function searchList() {
+      if (this.search) {
+        var search = this.search.toLowerCase();
+        return this.items.filter(function (item) {
+          return item.city.toLowerCase().indexOf(search) > -1 || item.region.toLowerCase().indexOf(search) > -1 || item.street.toLowerCase().indexOf(search) > -1 || item.rooms == search || item.floor == search || item.commonSquare == search || String(item.price).indexOf(search) > -1;
+        });
+      }
+
+      return this.items;
+    }
   },
   methods: {
     showAllFlats: function showAllFlats() {
@@ -2542,6 +2593,7 @@ __webpack_require__.r(__webpack_exports__);
       this.checkAll = false;
       this.checkedNames = [];
       this.checkedList = [];
+      this.search = '';
       this.showAllFlats();
     },
     deleteById: function deleteById(id) {
@@ -3111,6 +3163,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -3122,11 +3184,25 @@ __webpack_require__.r(__webpack_exports__);
       checkedNames: [],
       checkedList: [],
       setRole: [],
-      listBy: ''
+      listBy: '',
+      search: ''
     };
   },
-  mounted: function mounted() {
+  mounted: function mounted() {},
+  beforeMount: function beforeMount() {
     this.showAll();
+  },
+  computed: {
+    searchList: function searchList() {
+      if (this.search) {
+        var search = this.search.toLowerCase();
+        return this.items.filter(function (item) {
+          return item.name.toLowerCase().indexOf(search) > -1 || item.guard_name.toLowerCase().indexOf(search) > -1;
+        });
+      }
+
+      return this.items;
+    }
   },
   methods: {
     showAll: function showAll() {
@@ -3154,6 +3230,7 @@ __webpack_require__.r(__webpack_exports__);
       this.checkAll = false;
       this.checkedNames = [];
       this.checkedList = [];
+      this.search = '';
       this.showAll();
     },
     deleteById: function deleteById(id) {
@@ -3515,6 +3592,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3528,11 +3617,27 @@ __webpack_require__.r(__webpack_exports__);
       checkAll: false,
       checkedNames: [],
       checkedList: [],
-      setUser: []
+      setUser: [],
+      search: ''
     };
   },
-  mounted: function mounted() {
+  mounted: function mounted() {},
+  beforeMount: function beforeMount() {
     this.showAllUsers();
+  },
+  computed: {
+    searchList: function searchList() {
+      console.log(this.items);
+
+      if (this.search) {
+        var search = this.search.toLowerCase();
+        return this.items.filter(function (item) {
+          return item.name.toLowerCase().indexOf(search) > -1 || item.patronymic.toLowerCase().indexOf(search) > -1 || item.surname.toLowerCase().indexOf(search) > -1 || item.email.toLowerCase().indexOf(search) > -1;
+        });
+      }
+
+      return this.items;
+    }
   },
   methods: {
     showAllUsers: function showAllUsers() {
@@ -3548,6 +3653,7 @@ __webpack_require__.r(__webpack_exports__);
       this.checkAll = false;
       this.checkedNames = [];
       this.checkedList = [];
+      this.search = '';
       this.showAllUsers();
     },
     deleteById: function deleteById(id) {
@@ -3564,7 +3670,7 @@ __webpack_require__.r(__webpack_exports__);
     checked: function checked(id, index) {
       this.checkedList[index] = !this.checkedList[index];
     },
-    addNewUser: function addNewUser() {
+    addNew: function addNew() {
       this.displayCreate = true;
     },
     updateUser: function updateUser(id) {
@@ -9122,7 +9228,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-3de5a02b] {\n    background-color: #6f42c1;\n    color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-3de5a02b] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-3de5a02b]:hover{\n    color: #6f42c1;\n}\n.refresh[data-v-3de5a02b]:active {\n    font-size: 15px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9170,7 +9276,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-4860547d] {\n    background-color: #6f42c1;\n    color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-4860547d] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-4860547d]:hover{\n    color: #6f42c1;\n}\n.refresh[data-v-4860547d]:active {\n    font-size: 15px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9218,7 +9324,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-08e10746] {\n    background-color: #6f42c1;\n    color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-08e10746] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-08e10746]:hover{\n    color: #6f42c1;\n}\n.refresh[data-v-08e10746]:active {\n    font-size: 15px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9242,7 +9348,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-91cd0586] {\n    background-color: #6f42c1;\n    color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.done[data-v-91cd0586] {\n    background-color: #6f42c1;\n    color: white;\n}\n.refresh[data-v-91cd0586]:hover{\n    color: #6f42c1;\n}\n.refresh[data-v-91cd0586]:active {\n    font-size: 15px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42359,38 +42465,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card-body" }, [
+  return _c("div", { staticClass: "card-body table-responsive-md" }, [
     !_vm.display && !_vm.createDisplay
       ? _c("div", [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-11" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.createRequest }
-                },
-                [_vm._v("Создать новый запрос")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.deleteChecked($event)
-                    }
-                  }
-                },
-                [_vm._v(" Удалить отмеченные")]
-              )
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-start" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary mr-2 mt-1",
+                      on: { click: _vm.addNew }
+                    },
+                    [_vm._v("Создать запрос")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger mt-1",
+                      on: { click: _vm.deleteChecked }
+                    },
+                    [_vm._v("Удалить отмеченные")]
+                  )
+                ])
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [
-              _c("button", { staticClass: "btn", on: { click: _vm.refresh } }, [
-                _c("i", { staticClass: "fas fa-sync-alt" })
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c("div", { staticClass: "col-md-7" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.search,
+                        expression: "search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm mt-1",
+                    attrs: { placeholder: "Введите ваш запрос" },
+                    domProps: { value: _vm.search },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.search = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info mt-1 refresh",
+                      on: { click: _vm.refresh }
+                    },
+                    [_c("i", { staticClass: "fas fa-sync-alt" })]
+                  )
+                ])
               ])
             ])
           ]),
@@ -42456,7 +42594,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(_vm.items, function(item, index) {
+              _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
                     _c("th", { attrs: { scope: "row" } }, [
@@ -43224,26 +43362,66 @@ var render = function() {
     !_vm.displayUpdate && !_vm.displayCreate
       ? _c("div", [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-11" }, [
-              _c(
-                "button",
-                { staticClass: "btn btn-primary", on: { click: _vm.addNew } },
-                [_vm._v("Добавить новый объект")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: { click: _vm.deleteChecked }
-                },
-                [_vm._v("Удалить отмеченные")]
-              )
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-start" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary mr-2 mt-1",
+                      on: { click: _vm.addNew }
+                    },
+                    [_vm._v("Добавить новый объект")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger mt-1",
+                      on: { click: _vm.deleteChecked }
+                    },
+                    [_vm._v("Удалить отмеченные")]
+                  )
+                ])
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [
-              _c("button", { staticClass: "btn", on: { click: _vm.refresh } }, [
-                _c("i", { staticClass: "fas fa-sync-alt" })
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c("div", { staticClass: "col-md-7" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.search,
+                        expression: "search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm mt-1",
+                    attrs: { placeholder: "Введите ваш запрос" },
+                    domProps: { value: _vm.search },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.search = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info mt-1 refresh",
+                      on: { click: _vm.refresh }
+                    },
+                    [_c("i", { staticClass: "fas fa-sync-alt" })]
+                  )
+                ])
               ])
             ])
           ]),
@@ -43319,7 +43497,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(_vm.items, function(item, index) {
+              _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
                     _c("th", { attrs: { scope: "row" } }, [
@@ -44369,26 +44547,66 @@ var render = function() {
     !_vm.displayUpdate && !_vm.displayCreate && !_vm.displayList
       ? _c("div", [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-11" }, [
-              _c(
-                "button",
-                { staticClass: "btn btn-primary", on: { click: _vm.addNew } },
-                [_vm._v("Добавить новую роль")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: { click: _vm.deleteChecked }
-                },
-                [_vm._v("Удалить отмеченные")]
-              )
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-start" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary mr-2 mt-1",
+                      on: { click: _vm.addNew }
+                    },
+                    [_vm._v("Создать роль")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger mt-1",
+                      on: { click: _vm.deleteChecked }
+                    },
+                    [_vm._v("Удалить отмеченные")]
+                  )
+                ])
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [
-              _c("button", { staticClass: "btn", on: { click: _vm.refresh } }, [
-                _c("i", { staticClass: "fas fa-sync-alt" })
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c("div", { staticClass: "col-md-7" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.search,
+                        expression: "search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm mt-1",
+                    attrs: { placeholder: "Введите ваш запрос" },
+                    domProps: { value: _vm.search },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.search = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info mt-1 refresh",
+                      on: { click: _vm.refresh }
+                    },
+                    [_c("i", { staticClass: "fas fa-sync-alt" })]
+                  )
+                ])
               ])
             ])
           ]),
@@ -44454,7 +44672,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(_vm.items, function(item, index) {
+              _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
                     _c("th", { attrs: { scope: "row" } }, [
@@ -44621,8 +44839,6 @@ var render = function() {
                 )
               ])
             ]),
-            _vm._v(" "),
-            _c("hr"),
             _vm._v(" "),
             _c("list-roles-component", {
               attrs: { listBy: _vm.listBy },
@@ -45151,29 +45367,66 @@ var render = function() {
     !_vm.displayUpdate && !_vm.displayCreate
       ? _c("div", [
           _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-11" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: { click: _vm.addNewUser }
-                },
-                [_vm._v("Добавить пользователя")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-danger",
-                  on: { click: _vm.deleteChecked }
-                },
-                [_vm._v("Удалить отмеченные")]
-              )
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-start" }, [
+                _c("div", { staticClass: "col-md-12" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary mr-2 mt-1",
+                      on: { click: _vm.addNew }
+                    },
+                    [_vm._v("Добавить пользователя")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger mt-1",
+                      on: { click: _vm.deleteChecked }
+                    },
+                    [_vm._v("Удалить отмеченные")]
+                  )
+                ])
+              ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-1" }, [
-              _c("button", { staticClass: "btn", on: { click: _vm.refresh } }, [
-                _c("i", { staticClass: "fas fa-sync-alt" })
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "row justify-content-end" }, [
+                _c("div", { staticClass: "col-md-7" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.search,
+                        expression: "search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm mt-1",
+                    attrs: { placeholder: "Введите ваш запрос" },
+                    domProps: { value: _vm.search },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.search = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info mt-1 refresh",
+                      on: { click: _vm.refresh }
+                    },
+                    [_c("i", { staticClass: "fas fa-sync-alt" })]
+                  )
+                ])
               ])
             ])
           ]),
@@ -45245,7 +45498,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _vm._l(_vm.items, function(item, index) {
+              _vm._l(_vm.searchList, function(item, index) {
                 return _c("tbody", [
                   _c("tr", { class: { done: _vm.checkedList[index] } }, [
                     _c("th", { attrs: { scope: "row" } }, [

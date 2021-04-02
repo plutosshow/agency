@@ -23,7 +23,7 @@
             >
                 <a :href="'property/' + flat.id" class="prop-entry d-block">
                     <figure>
-                        <img :src="flat.image" alt="Image" class="img-fluid">
+                        <img :src="'http://yuri.shcherba.loc/uploads/' + flat.image" alt="Image" class="img-fluid">
                     </figure>
                     <div class="prop-text">
                         <div class="inner">
@@ -70,7 +70,7 @@ export default {
             price: false,
             items: [],
             pageNumber: 0,
-            size: 9
+            size: 9,
         }
     },
     mounted() {

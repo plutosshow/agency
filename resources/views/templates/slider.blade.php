@@ -1,7 +1,7 @@
 <div class="slider bx-wrapper">
     @foreach($slides as $slide)
         <div class="site-blocks-cover" data-aos="fade" data-stellar-background-ratio="0.5">
-            <img src="{{ $slide->image }}">
+            <img src="{{asset('uploads/'.$slide->image)}}">
             <div class="text">
                 <h2>{{$slide->city}}, {{$slide->street}}</h2>
                 <p class="mb-2 small text-gray-600"><span class="property-icon icon-room"></span>{{$slide->district}}, {{$slide->city}}, {{$slide->zip}}</p>
