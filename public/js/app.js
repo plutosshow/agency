@@ -2540,164 +2540,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      items: [],
-      displayCreate: false,
-      checkAll: false,
-      checkedNames: [],
-      checkedList: [],
-      setFlat: [],
-      files: [],
-      search: '',
-      pageNumber: 0,
-      size: 25,
-      checkedStatus: []
+      items: []
     };
   },
   mounted: function mounted() {},
   beforeMount: function beforeMount() {
     this.showAll();
   },
-  computed: {
-    searchList: function searchList() {
-      if (this.search) {
-        var search = this.search.toLowerCase();
-        return this.items.filter(function (item) {
-          return String(item.id).indexOf(search) > -1 || String(item.flat).indexOf(search) > -1;
-        });
-      }
-
-      return this.paginatedData;
-    },
-    pageCount: function pageCount() {
-      var l = this.items.length,
-          s = this.size;
-      return Math.ceil(l / s);
-    },
-    paginatedData: function paginatedData() {
-      var start = this.pageNumber * Number(this.size),
-          end = Number(start) + Number(this.size);
-      return this.items.slice(start, end);
-    }
-  },
   methods: {
-    paginatedPage: function paginatedPage(currentPage) {
-      this.pageNumber = currentPage;
-    },
     showAll: function showAll() {
       var _this = this;
 
       axios.get('http://yuri.shcherba.loc/admin/gallery/flats/getAllImages').then(function (response) {
         _this.items = response.data;
       });
-    },
-    format: function format(price) {
-      if (price) {
-        var priceFormat = Intl.NumberFormat().format(Number(price.toFixed(2)));
-        return priceFormat;
-        this.filter = true;
-      }
-    },
-    refresh: function refresh() {
-      this.checkAll = false;
-      this.checkedNames = [];
-      this.checkedList = [];
-      this.search = '';
-      this.showAll();
-    },
-    deleteById: function deleteById(id, filename) {
-      var _this2 = this;
-
-      axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyImage/' + id + '/' + filename).then(function (response) {
-        // this.items = response.data
-        // this.items = this.items.allFlats
-        _this2.refresh();
-      });
-    },
-    destroy: function destroy(id) {
-      var check = confirm('Вы уверенны, что хотите удалить эту фотографию?');
-
-      if (check) {
-        this.deleteById(id);
-      }
-    },
-    checked: function checked(id) {
-      this.checkedList[id] = !this.checkedList[id];
-    },
-    deleteChecked: function deleteChecked() {
-      var _this3 = this;
-
-      if (this.checkedNames.length) {
-        var check = confirm('Вы уверенны, что хотите сделать неактивными выбранные объекты?');
-
-        if (check) {
-          this.checkedNames.forEach(function (item) {
-            return _this3.deleteById(item);
-          });
-        }
-
-        this.refresh();
-      } else {
-        alert('Не выбрано, не 1 элемента');
-      }
-    },
-    checkedAll: function checkedAll() {
-      var self = this;
-      var start = self.pageNumber * Number(self.size);
-
-      if (this.checkAll) {
-        this.paginatedData.forEach(function (item) {
-          self.checkedNames[start] = item.id;
-          start++;
-        });
-        this.checkedNames.forEach(function (item) {
-          if (self.checkedList[item] != true) {
-            self.checked(item);
-          }
-        });
-      } else {
-        this.checkedList.forEach(function (item, index) {
-          if (self.checkedList[index] != false) {
-            self.checked(index);
-          }
-        });
-        self.checkedNames = [];
-      }
-    },
-    changeStatusById: function changeStatusById(id, show_on_main) {
-      var _this4 = this;
-
-      console.log(id);
-      var status = show_on_main;
-
-      if (!this.checkedNames.length) {
-        status = show_on_main == 0 ? 1 : 0;
-      } else {
-        status = 1;
-      }
-
-      axios.get('http://yuri.shcherba.loc/admin/gallery/flats/changeStatus/' + id + '/' + status).then(function (response) {
-        _this4.refresh();
-      });
-    },
-    changeMain: function changeMain(id) {
-      var _this5 = this;
-
-      if (this.checkedNames.length) {
-        var check = confirm('Вы уверенны, что хотите вывести данные объекты на главной?');
-
-        if (check) {
-          this.checkedNames.forEach(function (item) {
-            return _this5.changeStatusById(item);
-          });
-        }
-
-        this.refresh();
-      } else {
-        alert('Не выбрано, не 1 элемента');
-      }
     }
   }
 });
@@ -44103,25 +43996,148 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "card-body" },
+      _vm._l(_vm.items, function(item) {
+        return _c("div", { staticClass: "row" }, [
+          _vm._m(1, true),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-8" }, [
+            _c("form", { attrs: { method: "post" } }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: item.title,
+                          expression: "item.title"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { placeholder: "Заголовок", type: "text" },
+                      domProps: { value: item.title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(item, "title", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: item.sub_title,
+                          expression: "item.sub_title"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { placeholder: "Под заголовок", type: "text" },
+                      domProps: { value: item.sub_title },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(item, "sub_title", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: item.text,
+                          expression: "item.text"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { placeholder: "Описание", type: "text" },
+                      domProps: { value: item.text },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(item, "text", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(2, true)
+            ])
+          ])
+        ])
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _vm._m(3),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body " })
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h5", [_vm._v("Контент блок")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-header mt-3" }, [
-        _c("h5", [_vm._v("Блок 2")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body " })
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", [_vm._v("Контент блок")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-4" }, [
+      _c("img", { attrs: { src: "321321" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("button", { staticClass: "form-control btn btn-primary" }, [
+            _vm._v("Редактировать данные")
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header mt-3" }, [
+      _c("h5", [_vm._v("Блок 2")])
     ])
   }
 ]
