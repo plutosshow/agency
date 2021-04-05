@@ -68,11 +68,11 @@ Route::group(['middleware' => ['role:admin']], function () {
     //ImagesFlats
     Route::get('admin/tables/flats/getFlatImages/{id}', 'App\Http\Controllers\FlatsController@getFlatImages')->name('table.flats.getFlatImages');
     Route::get('admin/tables/flats/destroyImage/{id}/{filename}', 'App\Http\Controllers\FlatsController@destroyImage')->name('table.flats.destroyImage');
-
-
-
-
-
-
+    //Gallery
+    Route::get('admin/gallery/flats', 'App\Http\Controllers\Admin\GalleryController@index')->name('admin.gallery.flats');
+    Route::get('admin/gallery/flats/getAllImages', 'App\Http\Controllers\Admin\GalleryController@getAllImages')->name('gallery.flats.getAllImages');
+    Route::get('admin/gallery/flats/changeStatus/{id}/{status}', 'App\Http\Controllers\Admin\GalleryController@changeStatus')->name('gallery.flats.changeStatus');
+    //Pages
+    Route::get('admin/pages/about', 'App\Http\Controllers\Admin\AboutController@index')->name('admin.pages.about');
 
 });

@@ -78,15 +78,30 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
+                    <a href="#" class="nav-link {{(($activeParent ?? '') == 'gallery') ? "active" : "" ?? ''}}">
                         <i class="nav-icon far fa-image"></i>
                         <p>
                             {{_('Галерея')}}
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('admin.gallery.flats')}}" class="nav-link {{(($active ?? '') == 'gallery_flats') ? "active" : "" ?? ''}}">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <p>{{_('Фото квартир')}}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('admin.gallery.flats')}}" class="nav-link {{(($active ?? '') == 'gallery_pages') ? "active" : "" ?? ''}}">
+                                <i class="far fa-images"></i>
+                                <p>{{_('Фото страниц')}}</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{(($activeParent ?? '') == 'pages') ? "active" : "" ?? ''}}">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             {{_('Страницы')}}
@@ -101,7 +116,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/examples/invoice.html" class="nav-link">
+                            <a href="{{route('admin.pages.about')}}" class="nav-link {{(($active ?? '') == 'page_about') ? "active" : "" ?? ''}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>{{_('О нас')}}</p>
                             </a>

@@ -49,8 +49,10 @@ Vue.component('table-roles-component', require('./components/admin/tables/roles/
 Vue.component('update-roles-component', require('./components/admin/tables/roles/UpdateRoleComponent').default);
 Vue.component('create-roles-component', require('./components/admin/tables/roles/CreateRoleComponent').default);
 Vue.component('list-roles-component', require('./components/admin/tables/roles/ListRolesCompinent').default);
-
-
+//Gallery
+Vue.component('gallery-flats-component', require('./components/admin/gallery/GalleryFlatsComponent').default);
+//Pages
+Vue.component('page-about-component', require('./components/admin/pages/PageAboutComponent.vue').default);
 
 
 
