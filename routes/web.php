@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 Route::get('/', 'App\Http\Controllers\FlatsController@index')->name('home');
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+Route::get('/about', 'App\Http\Controllers\Admin\AboutController@mainView')->name('about');
 
 /*
  *Запросы к базе данных
@@ -38,11 +36,11 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/dashboard', 'App\Http\Controllers\Admin\DashboardController@index')->name('dashboard');
     //Requests
     Route::get('admin/forms/requests', 'App\Http\Controllers\Admin\FormRequestController@index')->name('admin.form.request');
-    Route::get('admin/forms/requests/getAll', 'App\Http\Controllers\Admin\FormRequestController@allRequests');
-    Route::get('admin/forms/requests/destroyRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@destroyRequest');
-    Route::get('admin/forms/requests/getRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@getRequest');
-    Route::post('admin/forms/requests/updateRequest', 'App\Http\Controllers\Admin\FormRequestController@updateRequest');
-    Route::post('admin/forms/requests/createRequest', 'App\Http\Controllers\Admin\FormRequestController@createRequest');
+    Route::get('admin/forms/requests/getAll', 'App\Http\Controllers\Admin\FormRequestController@allRequests')->name('form.request.getRequests');
+    Route::get('admin/forms/requests/destroyRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@destroyRequest')->name('form.request.destroy');
+    Route::get('admin/forms/requests/getRequest/{id}', 'App\Http\Controllers\Admin\FormRequestController@getRequest')->name('form.request.getRequest');
+    Route::post('admin/forms/requests/updateRequest', 'App\Http\Controllers\Admin\FormRequestController@updateRequest')->name('form.request.update');
+    Route::post('admin/forms/requests/createRequest', 'App\Http\Controllers\Admin\FormRequestController@createRequest')->name('form.request.create');
     //Users
     Route::get('admin/tables/users', 'App\Http\Controllers\Admin\TableUserController@index')->name('admin.table.users');
     Route::get('admin/tables/users/getAllUsers', 'App\Http\Controllers\Admin\TableUserController@allUsers')->name('table.users.getAll');
@@ -74,5 +72,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/gallery/flats/changeStatus/{id}/{status}', 'App\Http\Controllers\Admin\GalleryController@changeStatus')->name('gallery.flats.changeStatus');
     //Pages
     Route::get('admin/pages/about', 'App\Http\Controllers\Admin\AboutController@index')->name('admin.pages.about');
+    Route::get('admin/pages/about/getDefaultBlocks', 'App\Http\Controllers\Admin\AboutController@getDefaultBlocks')->name('pages.about.getDefaultBlocks');
+    Route::post('admin/pages/about/updateAbout', 'App\Http\Controllers\Admin\AboutController@updateAbout')->name('pages.about.updateAbout');
+
 
 });

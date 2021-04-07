@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title')Dashboard | {{ config('app.name') }} @endsection
+@section('title')Админ. "О нас" | {{ config('app.name') }} @endsection
 @section('content')
     @include('templates.header')
     @include('templates.admin.templates.side-bar',['activeParent' => 'pages', 'active'=>'page_about'])

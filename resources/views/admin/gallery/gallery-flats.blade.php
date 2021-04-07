@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title')Dashboard | {{ config('app.name') }} @endsection
+@section('title')Галерея | {{ config('app.name') }} @endsection
 @section('content')
     @include('templates.header')
     @include('templates.admin.templates.side-bar',['activeParent' => 'gallery', 'active'=>'gallery_flats'])
