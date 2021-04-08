@@ -52,7 +52,8 @@ Vue.component('list-roles-component', require('./components/admin/tables/roles/L
 //Gallery
 Vue.component('gallery-flats-component', require('./components/admin/gallery/GalleryFlatsComponent').default);
 //Pages
-Vue.component('page-about-component', require('./components/admin/pages/PageAboutComponent.vue').default);
+Vue.component('page-about-component', require('./components/admin/pages/about/PageAboutComponent.vue').default);
+Vue.component('create-employee-output', require('./components/admin/pages/about/CreateEmployeeOutput').default);
 
 
 

@@ -13,13 +13,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
-Route::get('/', 'App\Http\Controllers\FlatsController@index')->name('home');
-Route::get('/about', 'App\Http\Controllers\Admin\AboutController@mainView')->name('about');
 
 /*
- *Запросы к базе данных
+ * Open routes
 */
+//Auth
+Auth::routes();
+//Home
+Route::get('/', 'App\Http\Controllers\FlatsController@index')->name('home');
+//About
+Route::get('/about', 'App\Http\Controllers\Admin\AboutController@mainView')->name('about');
 //Flats
 Route::get('get/showAllFlats', 'App\Http\Controllers\FlatsController@showAllFlats')->name('show.allFlats');
 Route::get('property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->name('property');
@@ -27,7 +30,6 @@ Route::get('property/{id}', 'App\Http\Controllers\FlatsController@showFlat')->na
 Route::post('form/request', 'App\Http\Controllers\Forms\RequestController@submit')->name('form.request');
 //Filter
 Route::get('get/uniqueCities', 'App\Http\Controllers\Forms\FilterController@uniqueCities')->name('uniqueCities');
-
 /*
  * Admin routes
 */
@@ -74,6 +76,11 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('admin/pages/about', 'App\Http\Controllers\Admin\AboutController@index')->name('admin.pages.about');
     Route::get('admin/pages/about/getDefaultBlocks', 'App\Http\Controllers\Admin\AboutController@getDefaultBlocks')->name('pages.about.getDefaultBlocks');
     Route::post('admin/pages/about/updateAbout', 'App\Http\Controllers\Admin\AboutController@updateAbout')->name('pages.about.updateAbout');
-
+    //Employees
+    Route::get('admin/employees/getEmployees', 'App\Http\Controllers\Admin\EmployeesController@getEmployees')->name('admin.employees.getEmployees');
+    Route::post('admin/employees/createEmployee', 'App\Http\Controllers\Admin\EmployeesController@createEmployee')->name('admin.employees.createEmployee');
+    Route::get('admin/employees/showEmployees', 'App\Http\Controllers\Admin\EmployeesController@showEmployees')->name('admin.employees.showEmployees');
+    Route::get('admin/employees/destroyEmployee/{id}', 'App\Http\Controllers\Admin\EmployeesController@destroyEmployee')->name('admin.employees.destroyEmployee');
+    Route::post('admin/employees/updateEmployee', 'App\Http\Controllers\Admin\EmployeesController@updateEmployee')->name('admin.employees.updateEmployee');
 
 });
