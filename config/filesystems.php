@@ -49,6 +49,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'pages' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/uploads/pages'),
+            'url' => env('APP_URL').'/uploads/pages',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -1,11 +1,11 @@
 <template>
     <div class="card-body table-responsive-xl">
-        <div v-if="!displayUpdate && !displayCreate">
+        <div v-if="!displayCreate">
             <div class="row">
                 <div class="col-md-6">
                     <div class="row justify-content-start">
                         <div class="col-md-12">
-                            <button @click="addNew" class="btn btn-primary mr-2 mt-1">Добавить новый объект</button>
+                            <button @click="changeMain" class="btn btn-primary mt-1">Выводить на главной</button>
                             <button @click="deleteChecked" class="btn btn-danger mt-1">Удалить отмеченные</button>
                         </div>
                     </div>
@@ -33,35 +33,29 @@
                     <th scope="col"><input @change="checkedAll" id="checkAll" v-model="checkAll"
                                            type="checkbox"></th>
                     <th scope="col">#</th>
-                    <th scope="col">Регион</th>
-                    <th scope="col">Город</th>
-                    <th scope="col">Улица</th>
-                    <th scope="col">Комнат</th>
-                    <th scope="col">Этаж</th>
-                    <th scope="col">Площадь</th>
-                    <th scope="col">Цена</th>
-                    <th scope="col">Команды</th>
+                    <th scope="col">Изображение</th>
+                    <th scope="col">Квартира</th>
+                    <th scope="col">На главной</th>
+                    <th scope="colgroup">Удаление</th>
+
+
                 </tr>
                 </thead>
                 <div v-if="paginatedData.length==0" class="hidden">
-                    {{pageNumber=Number(pageCount)-1}}
+                    {{pageNumber=0}}
                 </div>
                 <tbody v-for="(item) in searchList">
                 <tr :class="{ done: checkedList[item.id] }">
-                    <th scope="row"><input @change="checked(item.id)" :id="item.id" v-model="checkedNames"
+                    <th scope="row"><input @change="checked(item.id , (item.id) )" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.region }}</td>
-                    <td>{{ item.city }}</td>
-                    <td>{{ item.street }}</td>
-                    <td>{{ item.rooms }}</td>
-                    <td>{{ item.floor }}</td>
-                    <td>{{ item.commonSquare }}</td>
-                    <td>{{ format(item.price) }}</td>
+                    <td><img class="preview" :src="'http://yuri.shcherba.loc/uploads/' + item.image"/></td>
+                    <td>{{ item.flat }}</td>
                     <td>
-                        <button @click="update(item.id)" type="button" class="btn btn-sm btn-warning">&#9998;
-                        </button>
-                        <button @click="destroy(item.id)" type="button" class="btn btn-sm btn-danger">&#10008;
+                        <strong @click="changeStatusById(item.id, item.show_on_main)" class="pointer">{{item.show_on_main == 1 ? "Да" : "Нет"}}</strong>
+                    </td>
+                    <td>
+                        <button @click="destroy(item.id, item.image)" type="button" class="btn btn-sm btn-danger">&#10008;
                         </button>
                     </td>
                 </tr>
@@ -81,15 +75,6 @@
                 </div>
             </div>
         </div>
-        <div v-if="displayUpdate">
-            <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-            <hr>
-            <update-flats-component
-                :items="setFlat"
-                :files="files"
-                @refresh="refresh"
-            ></update-flats-component>
-        </div>
         <div v-if="displayCreate">
             <button @click="refresh" class="btn"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
             <hr>
@@ -97,7 +82,7 @@
                 @refresh="refresh"
             ></create-flats-component>
         </div>
-        <div v-if="search=='' && !displayUpdate && !displayCreate">
+        <div v-if="search=='' && !displayCreate">
             <pagination-component
                 :pageCount="pageCount"
                 :pageNumber="pageNumber"
@@ -112,7 +97,6 @@ export default {
     data: function () {
         return {
             items: [],
-            displayUpdate: false,
             displayCreate: false,
             checkAll: false,
             checkedNames: [],
@@ -122,26 +106,22 @@ export default {
             search: '',
             pageNumber: 0,
             size: 25,
+            checkedStatus: [],
+
         }
     },
     mounted() {
     },
     beforeMount() {
-        this.showAllFlats()
+        this.showAll()
     },
     computed: {
         searchList: function () {
             if (this.search) {
                 let search = this.search.toLowerCase()
                 return this.items.filter(function (item) {
-                    return item.city.toLowerCase().indexOf(search) > -1 ||
-                        item.region.toLowerCase().indexOf(search) > -1 ||
-                        item.street.toLowerCase().indexOf(search) > -1 ||
-                        item.rooms == search ||
-                        item.floor == search ||
-                        item.commonSquare == search ||
-                        String(item.price).indexOf(search) > -1 ||
-                        item.id == search
+                    return String(item.id).indexOf(search) > -1 ||
+                        String(item.flat).indexOf(search) > -1
                 })
             }
             return this.paginatedData
@@ -161,10 +141,9 @@ export default {
         paginatedPage: function (currentPage) {
             this.pageNumber = currentPage
         },
-        showAllFlats: function () {
-            axios.get('http://yuri.shcherba.loc/admin/tables/flats/showFlats').then((response) => {
+        showAll: function () {
+            axios.get('http://yuri.shcherba.loc/admin/gallery/flats/getAllImages').then((response) => {
                 this.items = response.data
-                this.items = this.items.allFlats
             });
         },
         format: function (price) {
@@ -175,42 +154,27 @@ export default {
             }
         },
         refresh: function () {
-            console.log('refresh')
-            this.displayUpdate = false
-            this.displayCreate = false
             this.checkAll = false
             this.checkedNames = []
             this.checkedList = []
             this.search = ''
-            this.showAllFlats()
+            this.showAll()
         },
-        deleteById: function (id) {
-            axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then((response) => {
+        deleteById: function (id, filename) {
+            axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyImage/' + id + '/' + filename).then((response) => {
                 // this.items = response.data
                 // this.items = this.items.allFlats
                 this.refresh()
             });
         },
         destroy: function (id) {
-            const check = confirm('Вы уверенны, что хотите дать этому объекту статус не активен?')
+            const check = confirm('Вы уверенны, что хотите удалить эту фотографию?')
             if (check) {
                 this.deleteById(id)
             }
         },
         checked: function (id) {
             this.checkedList[id] = !this.checkedList[id]
-        },
-        addNew: function () {
-            this.displayCreate = true
-        },
-        update: function (id) {
-            this.displayUpdate = true
-            axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlat/' + id).then((response) => {
-                this.setFlat = response.data
-            });
-            axios.get('http://yuri.shcherba.loc/admin/tables/flats/getFlatImages/' + id).then((response) => {
-                this.files = response.data
-            });
         },
         deleteChecked: function () {
             if (this.checkedNames.length) {
@@ -240,7 +204,31 @@ export default {
                 })
                 self.checkedNames = []
             }
-        }
+        },
+        changeStatusById: function (id, show_on_main) {
+            console.log(id)
+            let status = show_on_main
+            if(!this.checkedNames.length){
+                status = show_on_main == 0 ? 1 : 0
+            } else {
+                status = 1;
+            }
+            axios.get('http://yuri.shcherba.loc/admin/gallery/flats/changeStatus/' + id + '/' + status).then((response) => {
+                this.refresh()
+            });
+
+        },
+        changeMain: function (id) {
+            if (this.checkedNames.length) {
+                const check = confirm('Вы уверенны, что хотите вывести данные объекты на главной?')
+                if (check) {
+                    this.checkedNames.forEach(item => this.changeStatusById(item))
+                }
+                this.refresh()
+            } else {
+                alert('Не выбрано, не 1 элемента')
+            }
+        },
     }
 }
 </script>
@@ -257,5 +245,18 @@ export default {
 
 .refresh:active {
     font-size: 15px;
+}
+
+.preview {
+    position: relative;
+    width: 150px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 1px rgba(0,0,0,0.4), 0px 3px 2px rgba(0,0,0,0.2);
+}
+
+.pointer {
+    cursor: pointer;
 }
 </style>

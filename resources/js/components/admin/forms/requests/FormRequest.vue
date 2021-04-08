@@ -38,13 +38,13 @@
                 </tr>
                 </thead>
                 <div v-if="paginatedData.length==0" class="hidden">
-                    {{pageNumber=Number(pageCount)-1}}
+                    {{pageNumber=0}}
                 </div>
-                <tbody v-for="(item,index) in searchList">
-                <tr :class="{ done: checkedList[index] }">
-                    <th scope="row"><input @change="checked(item.id , (index) )" :id="item.id" v-model="checkedNames"
+                <tbody v-for="(item) in searchList">
+                <tr :class="{ done: checkedList[item.id] }">
+                    <th scope="row"><input @change="checked(item.id)" :id="item.id" v-model="checkedNames"
                                            :value="item.id" type="checkbox"></th>
-                    <td>{{ index + 1 }}</td>
+                    <td>{{ item.id }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.phone }}</td>
                     <td>
@@ -167,8 +167,8 @@ export default {
         addNew: function () {
             this.createDisplay = true
         },
-        checked: function (id, index) {
-            this.checkedList[index] = !this.checkedList[index]
+        checked: function (id) {
+            this.checkedList[id] = !this.checkedList[id]
         },
         deleteById: function (id) {
             axios.get('http://yuri.shcherba.loc/admin/forms/requests/destroyRequest/' + id).then((response) => {
@@ -186,18 +186,22 @@ export default {
                 alert('Не выбрано, не 1 элемента')
             }
         },
-        checkedAll: function (){
-            let all = []
-            this.items.forEach(function (item, index){
-                all[index] = item.id
-            })
-            if(this.checkAll)
-                this.checkedNames = all
-            else
-                this.checkedNames = []
-            for(let k = 0; k < all.length; k++){
-                if (this.checkedList[k] != true || this.checkedNames.length == 0)
-                    this.checked(all[k], k)
+        checkedAll: function () {
+            const self = this
+            let start = self.pageNumber * Number(self.size)
+            if (this.checkAll){
+                this.paginatedData.forEach(function (item) {
+                    self.checkedNames[start] = item.id
+                    start++
+                })
+                this.checkedNames.forEach(function (item) {
+                    if(self.checkedList[item] != true){self.checked(item)}
+                })
+            } else{
+                this.checkedList.forEach(function (item, index) {
+                    if(self.checkedList[index] != false){self.checked(index)}
+                })
+                self.checkedNames = []
             }
         }
     }
