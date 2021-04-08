@@ -186,8 +186,6 @@ export default {
         },
         deleteById: function (id) {
             axios.get('http://yuri.shcherba.loc/admin/tables/flats/destroyFlat/' + id).then((response) => {
-                // this.items = response.data
-                // this.items = this.items.allFlats
                 this.refresh()
             });
         },
